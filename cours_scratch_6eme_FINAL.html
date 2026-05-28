@@ -1,0 +1,1750 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cours Scratch — 6ème</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#09090f;--s1:#0f1019;--s2:#141522;--border:#1f2138;
+  --txt:#eceef8;--muted:#5c6180;--soft:#9095b8;
+  --lime:#a8ff6e;--lime-d:rgba(168,255,110,.08);--lime-b:rgba(168,255,110,.18);
+  --sky:#5eb8ff;--sky-d:rgba(94,184,255,.08);--sky-b:rgba(94,184,255,.2);
+  --amber:#ffbe3d;--amber-d:rgba(255,190,61,.08);--amber-b:rgba(255,190,61,.2);
+  --rose:#ff6b8a;--rose-d:rgba(255,107,138,.08);--rose-b:rgba(255,107,138,.2);
+  --violet:#a07dff;--violet-d:rgba(160,125,255,.08);--violet-b:rgba(160,125,255,.2);
+  --teal:#3fffd2;--teal-d:rgba(63,255,210,.08);--teal-b:rgba(63,255,210,.2);
+  --orange:#ff8c42;--orange-d:rgba(255,140,66,.08);--orange-b:rgba(255,140,66,.2);
+  --sc:#ff6b35;--sc-d:rgba(255,107,53,.08);--sc-b:rgba(255,107,53,.2);
+}
+body.light{
+  --bg:#fff;--s1:#fff;--s2:#f7f8fc;--border:#e5e7f0;
+  --txt:#111118;--muted:#6b7094;--soft:#3a3f62;
+  --lime:#3d8a00;--lime-d:rgba(61,138,0,.07);--lime-b:rgba(61,138,0,.18);
+  --sky:#1565c0;--sky-d:rgba(21,101,192,.07);--sky-b:rgba(21,101,192,.18);
+  --amber:#b06000;--amber-d:rgba(176,96,0,.07);--amber-b:rgba(176,96,0,.18);
+  --rose:#b01040;--rose-d:rgba(176,16,64,.07);--rose-b:rgba(176,16,64,.18);
+  --violet:#5533bb;--violet-d:rgba(85,51,187,.07);--violet-b:rgba(85,51,187,.18);
+  --teal:#006b50;--teal-d:rgba(0,107,80,.07);--teal-b:rgba(0,107,80,.18);
+  --sc:#c0431a;--sc-d:rgba(192,67,26,.07);--sc-b:rgba(192,67,26,.18);
+}
+body.light{background-image:none;}
+body.light .hero{background:#fff!important;border-bottom:1px solid #e5e7f0;}
+body.light .hero::before{display:none;}
+body.light .sidebar{box-shadow:1px 0 0 #e5e7f0;}
+body.light .qblk{background:#f7f8fc;}
+body,body *{transition:background-color .3s ease,border-color .3s ease,color .25s ease;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif;min-height:100vh;
+  background-image:radial-gradient(ellipse 70% 40% at 85% 5%,rgba(255,107,53,.03) 0%,transparent 60%),
+    radial-gradient(ellipse 50% 50% at 5% 95%,rgba(94,184,255,.03) 0%,transparent 60%);}
+
+/* BANNER */
+.prof-banner{background:linear-gradient(90deg,#ff6b35,#c0431a);color:#fff;text-align:center;padding:10px 20px;font-size:14px;font-weight:700;position:relative;z-index:200;}
+.prof-banner span{opacity:.75;font-weight:400;margin-left:8px;font-size:12px;}
+body.light .prof-banner{background:linear-gradient(90deg,#c0431a,#8b2a0a);}
+
+/* TOAST */
+#gToastContainer{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;gap:8px;align-items:center;z-index:500;pointer-events:none;}
+.g-toast{background:var(--s1);border:1px solid var(--border);border-radius:24px;padding:10px 20px;font-family:'DM Mono';font-size:13px;font-weight:500;color:var(--txt);box-shadow:0 4px 24px rgba(0,0,0,.3);animation:toastIn .3s ease,toastOut .4s ease 2.4s forwards;display:flex;align-items:center;gap:8px;white-space:nowrap;}
+.g-toast.toast-xp{border-color:var(--violet-b);color:var(--violet);}
+.g-toast.toast-ok{border-color:var(--teal-b);color:var(--teal);}
+.g-toast.toast-ko{border-color:var(--rose-b);color:var(--rose);}
+.g-toast.toast-badge{border-color:var(--amber-b);color:var(--amber);}
+@keyframes toastIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes toastOut{from{opacity:1}to{opacity:0;transform:translateY(-8px)}}
+
+/* SUCCESS OVERLAY */
+#successOverlay{display:none;position:fixed;inset:0;z-index:850;align-items:center;justify-content:center;pointer-events:none;}
+#successOverlay.show{display:flex;}
+#wowCard{position:relative;display:flex;flex-direction:column;align-items:center;gap:12px;pointer-events:none;}
+.wow-ring{position:absolute;inset:-60px;border-radius:50%;border:3px solid var(--sc);opacity:0;transform:scale(.4);animation:wowRing 1s ease forwards;}
+.wow-ring2{position:absolute;inset:-100px;border-radius:50%;border:2px solid var(--sky);opacity:0;transform:scale(.3);animation:wowRing 1s ease .15s forwards;}
+@keyframes wowRing{0%{opacity:.8;transform:scale(.4);}100%{opacity:0;transform:scale(1.6);}}
+.wow-glow{position:absolute;inset:-40px;border-radius:50%;background:radial-gradient(ellipse,rgba(255,107,53,.35),transparent 70%);animation:wowGlow 1.8s ease infinite alternate;}
+@keyframes wowGlow{0%{opacity:.5;transform:scale(.9);}100%{opacity:1;transform:scale(1.1);}}
+.wow-icon{font-size:72px;line-height:1;animation:wowIcon .5s cubic-bezier(.4,0,.2,1) forwards;filter:drop-shadow(0 0 24px rgba(255,107,53,.8));}
+@keyframes wowIcon{0%{transform:scale(0) rotate(-20deg);opacity:0;}60%{transform:scale(1.2) rotate(5deg);}100%{transform:scale(1) rotate(0deg);opacity:1;}}
+.wow-text{font-family:'Instrument Serif',serif;font-size:56px;font-weight:900;line-height:1;background:linear-gradient(135deg,#ff6b35,#ffbe3d,#3fffd2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:wowText .55s cubic-bezier(.4,0,.2,1) .1s both;letter-spacing:-1px;}
+@keyframes wowText{0%{transform:scale(0) translateY(20px);opacity:0;}60%{transform:scale(1.1) translateY(-4px);}100%{transform:scale(1) translateY(0);opacity:1;}}
+.wow-sub{font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:800;color:var(--amber);background:var(--amber-d);border:1px solid var(--amber-b);border-radius:20px;padding:6px 20px;animation:wowText .5s ease .25s both;letter-spacing:.5px;}
+.wow-xp-badge{font-family:'DM Mono',monospace;font-size:22px;font-weight:900;color:#fff;background:var(--sc);border-radius:12px;padding:8px 24px;box-shadow:0 0 30px rgba(255,107,53,.6),0 4px 0 rgba(160,60,0,.5);animation:wowText .5s ease .35s both;}
+
+/* XP POP */
+.g-xp-pop{position:fixed;font-family:'DM Mono';font-size:14px;font-weight:700;color:var(--sc);pointer-events:none;z-index:600;animation:xpFloat 1.4s ease forwards;}
+@keyframes xpFloat{0%{opacity:1;transform:translateY(0) scale(1)}60%{opacity:1;transform:translateY(-30px) scale(1.15)}100%{opacity:0;transform:translateY(-55px) scale(.9)}}
+
+/* HUD */
+#gHUD{position:fixed;right:0;top:80px;width:224px;background:var(--s1);border:1px solid var(--border);border-right:none;border-radius:12px 0 0 12px;padding:16px;z-index:99;transition:transform .3s;}
+#gHUD.hidden{transform:translateX(204px);}
+#gHUD-toggle{position:fixed;right:224px;top:80px;background:var(--s2);border:1px solid var(--border);border-right:none;border-radius:6px 0 0 6px;padding:8px 7px;cursor:pointer;font-size:12px;color:var(--muted);z-index:100;transition:right .3s;}
+#gHUD-toggle.shifted{right:20px;}
+.hud-title{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}
+.hud-level-badge{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--s2);border:1px solid var(--border);border-radius:8px;margin-bottom:12px;}
+.hud-level-icon{font-size:22px;}
+.hud-level-name{font-size:13px;font-weight:700;color:var(--txt);}
+.hud-level-sub{font-size:10px;color:var(--muted);}
+.hud-xp-label{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:5px;}
+.hud-xp-label strong{color:var(--sc);}
+.hud-xp-track{height:6px;border-radius:3px;background:var(--border);overflow:hidden;margin-bottom:14px;}
+.hud-xp-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--sc),var(--amber));transition:width .6s ease;}
+.hud-badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;}
+.hud-badge-slot{width:32px;height:32px;border-radius:8px;background:var(--s2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;opacity:.25;transition:all .3s;cursor:default;}
+.hud-badge-slot.earned{opacity:1;border-color:var(--amber-b);background:var(--amber-d);box-shadow:0 0 8px rgba(255,190,61,.3);}
+.skill-bar-row{display:flex;align-items:center;gap:10px;margin:6px 0;}
+.skill-bar-label{font-size:11px;color:var(--muted);width:100px;}
+.skill-bar-track{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
+.skill-bar-fill{height:100%;border-radius:3px;transition:width 1s;}
+.skill-bar-val{font-family:'DM Mono';font-size:10px;color:var(--soft);width:28px;text-align:right;}
+
+/* END SCREEN */
+#gEndScreen{display:none;position:fixed;inset:0;background:rgba(9,9,15,.95);z-index:999;align-items:center;justify-content:center;backdrop-filter:blur(8px);}
+#gEndScreen.show{display:flex;}
+.g-end-card{background:var(--s1);border:1px solid var(--border);border-radius:20px;padding:48px 52px;max-width:500px;width:90%;text-align:center;box-shadow:0 24px 80px rgba(0,0,0,.5);animation:fu .4s ease;}
+.g-end-emoji{font-size:64px;display:block;margin-bottom:16px;line-height:1;}
+.g-end-title{font-family:'Instrument Serif',serif;font-size:34px;color:var(--txt);margin-bottom:8px;line-height:1.1;}
+.g-end-title em{color:var(--sc);font-style:italic;}
+.g-end-sub{font-size:14px;color:var(--soft);margin-bottom:28px;line-height:1.6;}
+.g-end-stats{display:flex;gap:16px;justify-content:center;margin-bottom:28px;flex-wrap:wrap;}
+.g-end-stat{padding:12px 20px;border-radius:10px;background:var(--s2);border:1px solid var(--border);text-align:center;}
+.g-end-stat-val{font-family:'DM Mono';font-size:24px;font-weight:700;color:var(--sc);}
+.g-end-stat-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:2px;}
+.g-end-badges{display:flex;gap:10px;justify-content:center;margin-bottom:24px;}
+.g-end-badge{width:44px;height:44px;border-radius:10px;background:var(--sc-d);border:1px solid var(--sc-b);display:flex;align-items:center;justify-content:center;font-size:22px;}
+.g-end-msg{font-size:15px;font-weight:600;color:var(--teal);margin-bottom:24px;padding:14px 20px;background:var(--teal-d);border:1px solid var(--teal-b);border-radius:10px;}
+.g-end-close{padding:12px 32px;border-radius:10px;background:var(--sc);border:none;color:#fff;font-family:'Plus Jakarta Sans';font-size:14px;font-weight:800;text-transform:uppercase;cursor:pointer;transition:opacity .2s;}
+.g-end-close:hover{opacity:.85;}
+
+/* SIDEBAR */
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:220px;background:var(--s1);border-right:1px solid var(--border);padding:28px 0;z-index:100;overflow-y:auto;}
+.sidebar::-webkit-scrollbar{width:3px;}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border);}
+.logo{padding:0 20px 22px;border-bottom:1px solid var(--border);margin-bottom:14px;}
+.logo-eyebrow{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--sc);margin-bottom:6px;}
+.logo-title{font-family:'Instrument Serif',serif;font-size:20px;color:var(--txt);line-height:1.15;}
+.logo-level{font-size:11px;color:var(--muted);margin-top:3px;}
+.nav-label{font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:0 20px;margin-bottom:4px;display:block;margin-top:10px;}
+.nlink{display:flex;align-items:center;gap:9px;padding:7px 20px;font-size:12.5px;font-weight:500;color:var(--muted);text-decoration:none;transition:all .15s;border-left:2px solid transparent;}
+.nlink:hover,.nlink.on{color:var(--txt);border-left-color:var(--sc);background:rgba(255,107,53,.04);}
+.nd{width:5px;height:5px;border-radius:50%;background:var(--border);flex-shrink:0;transition:background .15s;}
+.nlink:hover .nd,.nlink.on .nd{background:var(--sc);}
+.theme-toggle{display:flex;align-items:center;justify-content:space-between;margin:16px 20px 0;padding:8px 12px;border-radius:8px;background:var(--s2);border:1px solid var(--border);cursor:pointer;font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;user-select:none;}
+.theme-toggle:hover{border-color:var(--sc);color:var(--sc);}
+.toggle-track{width:34px;height:18px;border-radius:9px;background:var(--border);position:relative;flex-shrink:0;}
+.toggle-track.on{background:var(--sc);}
+.toggle-thumb{position:absolute;top:3px;left:3px;width:12px;height:12px;border-radius:50%;background:#fff;transition:transform .3s;}
+.toggle-track.on .toggle-thumb{transform:translateX(16px);}
+.g-sidebar-hud{margin:12px 20px 0;padding:10px 12px;border-radius:8px;background:var(--s2);border:1px solid var(--border);}
+.g-sidebar-xp-row{display:flex;justify-content:space-between;align-items:center;font-size:11px;margin-bottom:6px;}
+.g-sidebar-xp-val{font-family:'DM Mono';color:var(--sc);font-weight:700;}
+.g-sidebar-track{height:4px;border-radius:2px;background:var(--border);overflow:hidden;}
+.g-sidebar-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--sc),var(--amber));transition:width .5s ease;}
+
+/* MAIN */
+.main{margin-left:220px;}
+
+/* HERO */
+.hero{padding:72px 60px 56px;border-bottom:1px solid var(--border);position:relative;overflow:hidden;background:linear-gradient(145deg,#0f0a07,var(--bg));}
+.hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,.012) 0px,transparent 1px,transparent 64px,rgba(255,255,255,.012) 65px),repeating-linear-gradient(0deg,rgba(255,255,255,.012) 0px,transparent 1px,transparent 64px,rgba(255,255,255,.012) 65px);pointer-events:none;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:7px;background:var(--sc-d);border:1px solid var(--sc-b);color:var(--sc);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 12px;border-radius:6px;margin-bottom:22px;}
+.hero-eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--sc);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+.hero h1{font-family:'Instrument Serif',serif;font-size:58px;line-height:1.0;color:var(--txt);margin-bottom:16px;position:relative;z-index:1;}
+.hero h1 em{color:var(--sc);font-style:italic;}
+.hero-desc{font-size:15.5px;color:var(--soft);max-width:520px;line-height:1.65;margin-bottom:30px;}
+.hero-desc strong{color:var(--txt);font-weight:600;}
+.obj-row{display:flex;gap:8px;flex-wrap:wrap;}
+.obj-chip{padding:6px 13px;border-radius:6px;background:var(--s2);border:1px solid var(--border);font-size:12px;font-weight:500;color:var(--soft);display:flex;align-items:center;gap:6px;}
+.hero-deco{position:absolute;right:56px;top:50%;transform:translateY(-50%);font-family:'Instrument Serif',serif;font-style:italic;font-size:120px;color:rgba(255,107,53,.04);user-select:none;pointer-events:none;line-height:1;}
+
+/* CONTENT */
+.content{padding:52px 60px 100px;max-width:920px;}
+.section{margin-bottom:60px;}
+.sec-hdr{display:flex;align-items:flex-start;gap:18px;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--border);}
+.sec-n{font-family:'DM Mono',monospace;font-size:11px;font-weight:500;color:var(--sc);background:var(--sc-d);border:1px solid var(--sc-b);padding:3px 8px;border-radius:5px;margin-top:5px;white-space:nowrap;}
+.sec-title{font-family:'Instrument Serif',serif;font-size:28px;color:var(--txt);line-height:1.15;}
+.sec-sub{font-size:12px;color:var(--muted);margin-top:3px;}
+p{font-size:15px;line-height:1.75;margin-bottom:10px;}
+
+/* CARDS */
+.card{border-radius:10px;padding:18px 22px;margin:14px 0;border:1px solid;}
+.card::before{display:block;font-size:8.5px;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:10px;}
+.cdef{background:var(--sky-d);border-color:var(--sky-b);}.cdef::before{content:'DÉFINITION';color:var(--sky);}
+.cmet{background:var(--violet-d);border-color:var(--violet-b);}.cmet::before{content:'MÉTHODE';color:var(--violet);}
+.cex{background:var(--teal-d);border-color:var(--teal-b);}.cex::before{content:'EXEMPLE';color:var(--teal);}
+.cwarn{background:var(--rose-d);border-color:var(--rose-b);}.cwarn::before{content:'ATTENTION';color:var(--rose);}
+.ctip{background:var(--amber-d);border-color:var(--amber-b);}.ctip::before{content:'ASTUCE';color:var(--amber);}
+.clife{background:var(--lime-d);border-color:var(--lime-b);}.clife::before{content:'VIE RÉELLE';color:var(--lime);}
+
+/* STEPS */
+.steps{background:var(--s2);border:1px solid var(--border);border-radius:9px;padding:16px 20px;margin:12px 0;font-family:'DM Mono',monospace;font-size:13.5px;}
+.sr{display:grid;grid-template-columns:150px 1fr;gap:12px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);align-items:baseline;}
+.sr:last-child{border-bottom:none;}
+.slbl{color:var(--muted);font-size:10.5px;padding-top:2px;}
+.seq .h{color:var(--sc);font-weight:500;}
+.seq .ok{color:var(--teal);}
+
+/* QUIZ */
+.qblk{background:var(--s2);border:1px solid var(--border);border-radius:9px;padding:16px 20px;margin-bottom:12px;}
+.qtext{font-size:14px;margin-bottom:12px;font-weight:500;line-height:1.5;}
+.qopts{display:flex;gap:8px;flex-wrap:wrap;}
+.qopt{padding:7px 16px;border-radius:7px;background:var(--s1);border:1px solid var(--border);color:var(--txt);font-family:'DM Mono';font-size:13px;cursor:pointer;transition:all .15s;}
+.qopt:hover{border-color:var(--sc);color:var(--sc);}
+.qopt.sel{border-color:var(--sc);background:var(--sc-d);color:var(--sc);}
+.qopt.good{border-color:var(--teal);background:var(--teal-d);color:var(--teal);}
+.qopt.bad{border-color:var(--rose);background:var(--rose-d);color:var(--rose);}
+.qopt:disabled{cursor:not-allowed;}
+.qsubmit{display:inline-flex;align-items:center;gap:8px;margin-top:16px;padding:11px 28px;border-radius:8px;background:var(--sc);border:none;color:#fff;font-family:'Plus Jakarta Sans';font-size:14px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;transition:opacity .2s;}
+.qsubmit:hover{opacity:.88;}
+.qsubmit:disabled{opacity:.35;cursor:not-allowed;}
+.qresult{display:none;margin-top:16px;padding:22px;border-radius:10px;text-align:center;}
+.qresult.on{display:block;animation:fu .3s ease;}
+.rscore{font-family:'Instrument Serif';font-size:60px;line-height:1;margin-bottom:8px;}
+.rbar{height:5px;border-radius:3px;background:var(--border);margin:14px 0;overflow:hidden;}
+.rbarfill{height:100%;border-radius:3px;transition:width .8s ease;}
+.rmsg{font-size:14px;color:var(--soft);}
+
+/* EXERCISE BLOCKS */
+.exblk{background:var(--s1);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:18px 0;}
+.exhdr{display:flex;align-items:center;justify-content:space-between;padding:13px 22px;border-bottom:1px solid var(--border);background:var(--s2);}
+.extitle{font-size:14px;font-weight:700;color:var(--txt);}
+.badge{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 9px;border-radius:5px;}
+.beasy{background:var(--teal-d);color:var(--teal);border:1px solid var(--teal-b);}
+.bmid{background:var(--amber-d);color:var(--amber);border:1px solid var(--amber-b);}
+.bhard{background:var(--rose-d);color:var(--rose);border:1px solid var(--rose-b);}
+.exbody{padding:18px 22px;}
+.corrBtn{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:7px 14px;border-radius:7px;background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'Plus Jakarta Sans';font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;transition:all .2s;}
+.corrBtn:hover{border-color:var(--sc);color:var(--sc);}
+.corrPanel{display:none;margin-top:12px;padding:14px 18px;background:var(--sc-d);border:1px solid var(--sc-b);border-radius:8px;font-family:'DM Mono';font-size:13px;line-height:2;}
+.corrPanel.on{display:block;animation:fu .2s ease;}
+
+/* CALC BOX */
+.calc-box{background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:22px;margin:16px 0;}
+.calc-title{font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:16px;}
+.calc-input{background:var(--s1);border:1px solid var(--border);border-radius:8px;padding:9px 14px;color:var(--txt);font-family:'DM Mono';font-size:14px;width:80px;text-align:center;transition:border-color .2s;}
+.calc-input:focus{outline:none;border-color:var(--sc);}
+.calc-input.ok{border-color:var(--teal);background:var(--teal-d);}
+.calc-input.ko{border-color:var(--rose);background:var(--rose-d);}
+.calc-btn{padding:9px 20px;border-radius:8px;background:var(--sc);border:none;color:#fff;font-family:'Plus Jakarta Sans';font-size:13px;font-weight:800;cursor:pointer;transition:opacity .2s;}
+.calc-btn:hover{opacity:.85;}
+.calc-result{font-family:'DM Mono';font-size:18px;font-weight:700;color:var(--teal);background:var(--teal-d);border:1px solid var(--teal-b);border-radius:8px;padding:10px 18px;display:inline-block;margin-top:10px;min-width:120px;text-align:center;}
+.calc-steps-display{margin-top:14px;padding:14px;background:var(--s1);border-radius:8px;border:1px solid var(--border);font-family:'DM Mono';font-size:13px;line-height:2;display:none;}
+.calc-steps-display.on{display:block;animation:fu .3s ease;}
+
+/* SCRATCH BLOCKS */
+.bv{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:7px;font-family:'DM Mono';font-size:12.5px;font-weight:700;margin:2px;color:#fff;user-select:none;cursor:default;}
+.bv-hat{border-radius:18px 18px 7px 7px;}
+.bv-cap{border-radius:7px 7px 0 0;}
+.bv-foot{background:#e6a000!important;color:#fff;}
+.bv-motion{background:#4d97ff;}
+.bv-looks{background:#9966ff;}
+.bv-sound{background:#cf63cf;}
+.bv-events{background:#ffab19;color:#1a0e00;}
+.bv-control{background:#ff8c1a;}
+.bv-op{background:#59c059;}
+.bv-var{background:#ff8c1a;}
+.bv-indent{margin-left:18px;}
+.bv-indent2{margin-left:36px;}
+.block-stack{display:inline-flex;flex-direction:column;gap:2px;padding:14px;background:var(--s1);border-radius:10px;border:1px solid var(--border);}
+.bv-inp{background:rgba(0,0,0,.22);padding:1px 8px;border-radius:4px;font-size:.9em;}
+
+/* CHALLENGE */
+.g-challenge{background:var(--s2);border:1px solid var(--amber-b);border-radius:10px;padding:16px 20px;margin:18px 0;position:relative;overflow:hidden;}
+.g-challenge::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--amber);}
+.g-challenge-header{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.g-challenge-tag{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--amber);background:var(--amber-d);border:1px solid var(--amber-b);padding:3px 8px;border-radius:4px;}
+.g-challenge-q{font-size:14px;font-weight:600;margin-bottom:12px;color:var(--txt);}
+.g-challenge-opts{display:flex;gap:8px;flex-wrap:wrap;}
+.g-copt{padding:7px 16px;border-radius:7px;background:var(--s1);border:1.5px solid var(--border);color:var(--txt);font-family:'DM Mono';font-size:13px;cursor:pointer;transition:all .15s;}
+.g-copt:hover{border-color:var(--amber);color:var(--amber);}
+.g-copt.gc-ok{border-color:var(--teal);background:var(--teal-d);color:var(--teal);}
+.g-copt.gc-ko{border-color:var(--rose);background:var(--rose-d);color:var(--rose);}
+.g-copt:disabled{cursor:not-allowed;opacity:.7;}
+.g-challenge-fb{margin-top:10px;font-size:13px;font-weight:600;display:none;line-height:1.5;}
+.g-challenge-fb.show{display:block;animation:fu .2s ease;}
+.g-xp-reward{display:inline-flex;align-items:center;gap:5px;font-family:'DM Mono';font-size:11px;font-weight:700;color:var(--sc);margin-top:6px;}
+.g-objective{display:inline-flex;align-items:center;gap:8px;background:var(--lime-d);border:1px solid var(--lime-b);color:var(--lime);font-size:12px;font-weight:600;padding:6px 14px;border-radius:20px;margin-bottom:16px;}
+.g-objective::before{content:'🎯';font-size:13px;}
+
+/* NARRATION */
+.g-narration{display:flex;gap:12px;align-items:flex-start;background:var(--s2);border:1px solid var(--sc-b);border-radius:10px;padding:14px 18px;margin-bottom:24px;font-size:13.5px;line-height:1.65;color:var(--soft);}
+.g-narration-avatar{width:36px;height:36px;border-radius:50%;background:var(--sc-d);border:1px solid var(--sc-b);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.g-narration strong{color:var(--txt);}
+
+/* MODE SELECTOR */
+.g-mode-selector{display:flex;gap:8px;margin:20px 0 28px;flex-wrap:wrap;}
+.g-mode-btn{flex:1;min-width:100px;padding:10px 14px;border-radius:9px;border:1.5px solid var(--border);background:var(--s2);cursor:pointer;text-align:center;transition:all .2s;font-family:'Plus Jakarta Sans';}
+.gm-icon{font-size:18px;display:block;margin-bottom:4px;}
+.gm-name{font-size:12px;font-weight:700;color:var(--txt);display:block;}
+.gm-desc{font-size:10px;color:var(--muted);display:block;margin-top:2px;}
+.g-mode-btn:hover{border-color:var(--sc);}
+.g-mode-btn.gm-active{border-color:var(--sc);background:var(--sc-d);}
+.g-mode-btn.gm-active .gm-name{color:var(--sc);}
+
+/* TROPHY */
+.trophy-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin:16px 0;}
+.trophy-card{background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center;cursor:pointer;transition:all .2s;}
+.trophy-card:hover{border-color:var(--sc-b);transform:translateY(-2px);}
+.trophy-card.locked{opacity:.45;filter:grayscale(1);}
+.trophy-card.unlocked{border-color:var(--sc-b);background:var(--sc-d);}
+.trophy-card.legendary{border-color:var(--amber-b);background:var(--amber-d);}
+.trophy-icon{font-size:32px;display:block;margin-bottom:8px;}
+.trophy-name{font-size:12px;font-weight:700;color:var(--txt);margin-bottom:4px;}
+.trophy-desc{font-size:10px;color:var(--muted);margin-top:4px;}
+.trophy-rarity{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:2px 8px;border-radius:4px;display:inline-block;}
+.rarity-c{color:var(--soft);background:var(--s1);}
+.rarity-r{color:var(--sky);background:var(--sky-d);}
+.rarity-e{color:var(--sc);background:var(--sc-d);}
+.rarity-l{color:var(--amber);background:var(--amber-d);}
+
+/* STAT TABLE */
+.stat-table{border-collapse:collapse;width:100%;border-radius:10px;overflow:hidden;margin:14px 0;font-size:13px;}
+.stat-table th{background:var(--s2);border:1px solid var(--border);padding:9px 14px;text-align:center;color:var(--muted);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+.stat-table td{border:1px solid var(--border);padding:9px 14px;text-align:center;background:var(--s1);color:var(--txt);}
+.stat-table td.hi{color:var(--teal);font-weight:700;background:var(--teal-d);}
+.stat-table td.hi2{color:var(--sky);font-weight:700;background:var(--sky-d);}
+.stat-table td.hi3{color:var(--rose);font-weight:700;background:var(--rose-d);}
+.stat-table td.hi4{color:var(--amber);font-weight:700;background:var(--amber-d);}
+.stat-table td.hi5{color:var(--lime);font-weight:700;background:var(--lime-d);}
+
+/* DIVIDER */
+.divider{height:1px;background:var(--border);margin:40px 0;}
+
+/* ANIMATIONS */
+@keyframes fu{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pop{0%{transform:scale(0)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
+@keyframes formulePop{0%{transform:scale(.8) translateY(10px);opacity:0;}100%{transform:none;opacity:1;}}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .sidebar{display:none;}
+  .main{margin-left:0;}
+  .hero{padding:48px 24px 40px;}
+  .hero h1{font-size:36px;}
+  .content{padding:32px 24px 80px;}
+  #gHUD,#gHUD-toggle{display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ DOM ELEMENTS ═══════════ -->
+<div id="gToastContainer"></div>
+
+<div id="successOverlay">
+<div id="wowCard">
+  <div class="wow-ring"></div><div class="wow-ring2"></div>
+  <div class="wow-glow"></div>
+  <div class="wow-icon" id="wowIcon">✅</div>
+  <div class="wow-text" id="wowText">BRAVO !</div>
+  <div class="wow-sub" id="wowSub">+15 XP</div>
+  <div class="wow-xp-badge" id="wowXP">+15 XP</div>
+</div>
+</div>
+
+<button id="gHUD-toggle" onclick="gHUDtoggle()">◀</button>
+<div id="gHUD">
+  <div class="hud-title">🎮 Tableau de bord</div>
+  <div class="hud-level-badge">
+    <div class="hud-level-icon" id="gLevelIcon">🐱</div>
+    <div>
+      <div class="hud-level-name" id="gLevelName">Débutant</div>
+      <div class="hud-level-sub" id="gLevelSub">0 XP</div>
+    </div>
+  </div>
+  <div class="hud-xp-label"><span>XP Total</span><strong id="gXPLabel">0 / 60</strong></div>
+  <div class="hud-xp-track"><div class="hud-xp-fill" id="gXPFill" style="width:0%"></div></div>
+  <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Compétences</div>
+  <div class="skill-bar-row"><span class="skill-bar-label">🎭 Interface</span><div class="skill-bar-track"><div class="skill-bar-fill" id="skInt" style="width:0%;background:var(--sky);"></div></div><span class="skill-bar-val" id="skIntV">0</span></div>
+  <div class="skill-bar-row"><span class="skill-bar-label">🔁 Boucles</span><div class="skill-bar-track"><div class="skill-bar-fill" id="skBoucle" style="width:0%;background:var(--orange);"></div></div><span class="skill-bar-val" id="skBoucleV">0</span></div>
+  <div class="skill-bar-row"><span class="skill-bar-label">🧠 Logique</span><div class="skill-bar-track"><div class="skill-bar-fill" id="skLogic" style="width:0%;background:var(--teal);"></div></div><span class="skill-bar-val" id="skLogicV">0</span></div>
+  <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin:8px 0 6px;">Badges</div>
+  <div class="hud-badges">
+    <div class="hud-badge-slot" id="badge-int" title="Explorateur Scratch">🎭</div>
+    <div class="hud-badge-slot" id="badge-boucle" title="Maître des Boucles">🔁</div>
+    <div class="hud-badge-slot" id="badge-logic" title="Logicien">🧠</div>
+    <div class="hud-badge-slot" id="badge-quiz" title="Champion du Quiz">🏆</div>
+    <div class="hud-badge-slot" id="badge-all" title="Programmeur Étoile">⭐</div>
+  </div>
+</div>
+
+<div id="gEndScreen">
+  <div class="g-end-card">
+    <span class="g-end-emoji" id="gEndEmoji">🏆</span>
+    <div class="g-end-title">Mission <em>accomplie</em> !</div>
+    <div class="g-end-sub" id="gEndSub">Tu as terminé le cours Scratch !</div>
+    <div class="g-end-stats">
+      <div class="g-end-stat"><div class="g-end-stat-val" id="gEndXP">0</div><div class="g-end-stat-lbl">XP Total</div></div>
+      <div class="g-end-stat"><div class="g-end-stat-val" id="gEndLvl">—</div><div class="g-end-stat-lbl">Niveau</div></div>
+      <div class="g-end-stat"><div class="g-end-stat-val" id="gEndBdg">0/5</div><div class="g-end-stat-lbl">Badges</div></div>
+    </div>
+    <div class="g-end-badges" id="gEndBadgeList"></div>
+    <div class="g-end-msg" id="gEndMsg">Félicitations !</div>
+    <button class="g-end-close" onclick="document.getElementById('gEndScreen').classList.remove('show')">Fermer ✕</button>
+  </div>
+</div>
+
+<!-- BANNER -->
+<div class="prof-banner">👨‍🏫 Cours d'Informatique — 6ème <span>Scratch · Séquences · Boucles · Conditions · Coordonnées</span></div>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="logo">
+    <div class="logo-eyebrow">Informatique · 6ème</div>
+    <div class="logo-title">Scratch</div>
+    <div class="logo-level">Cours interactif complet</div>
+  </div>
+  <span class="nav-label">Le cours</span>
+  <a class="nlink on" href="#s1"><span class="nd"></span>C'est quoi Scratch ?</a>
+  <a class="nlink" href="#s2"><span class="nd"></span>L'interface Scratch</a>
+  <a class="nlink" href="#s3"><span class="nd"></span>Les blocs de base</a>
+  <a class="nlink" href="#s4"><span class="nd"></span>Boucles &amp; Conditions</a>
+  <a class="nlink" href="#s5"><span class="nd"></span>Coordonnées (x, y)</a>
+  <span class="nav-label">Pratique</span>
+  <a class="nlink" href="#s6"><span class="nd"></span>Mini Projets</a>
+  <a class="nlink" href="#s7"><span class="nd"></span>Exercices interactifs</a>
+  <a class="nlink" href="#s8"><span class="nd"></span>Quiz final</a>
+  <a class="nlink" href="#s9"><span class="nd"></span>Trophées</a>
+  <a class="nlink" href="#s10" style="color:var(--amber);"><span class="nd" style="background:var(--amber-d);border:1px solid var(--amber-b);width:5px;height:5px;"></span>Fiches de révision</a>
+  <div class="g-sidebar-hud">
+    <div class="g-sidebar-xp-row">
+      <span style="font-size:10px;color:var(--muted);font-weight:700;letter-spacing:1px;text-transform:uppercase;">XP</span>
+      <span class="g-sidebar-xp-val" id="gSideXP">0 pts</span>
+    </div>
+    <div class="g-sidebar-track"><div class="g-sidebar-fill" id="gSideFill" style="width:0%"></div></div>
+  </div>
+  <div class="theme-toggle" onclick="toggleTheme()">
+    <span id="themeLabel">🌙 Mode nuit</span>
+    <div class="toggle-track" id="toggleTrack"><div class="toggle-thumb"></div></div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div class="main">
+<div class="hero">
+  <div class="hero-deco">if … then</div>
+  <div style="display:inline-flex;align-items:center;gap:8px;background:var(--sc-d);border:1px solid var(--sc-b);border-radius:8px;padding:6px 14px;margin-bottom:14px;">
+    <span style="font-size:16px;">👨‍🏫</span>
+    <span style="font-size:12px;font-weight:700;color:var(--sc);">Cours d'Informatique — Cycle 3</span>
+  </div>
+  <div style="margin-bottom:10px;">
+    <span style="font-size:12px;font-weight:700;letter-spacing:1px;color:var(--amber);background:var(--amber-d);border:1px solid var(--amber-b);padding:4px 12px;border-radius:6px;">🐱 Cours complet · 6ème · Programme officiel</span>
+  </div>
+  <div class="hero-eyebrow">Programme officiel cycle 3</div>
+  <h1>Scratch<br>&amp; <em>Algorithmique</em></h1>
+  <p class="hero-desc">Apprends à programmer avec <strong>Scratch</strong> : crée tes premières animations, maîtrise les <strong>boucles</strong>, les <strong>conditions</strong> et invente ton propre jeu vidéo !</p>
+  <div class="obj-row">
+    <div class="obj-chip">🎭 Découvrir l'interface</div>
+    <div class="obj-chip">📜 Créer des séquences</div>
+    <div class="obj-chip">🔁 Maîtriser les boucles</div>
+    <div class="obj-chip">🧠 Utiliser les conditions SI</div>
+    <div class="obj-chip">📍 Comprendre les coordonnées</div>
+    <div class="obj-chip">🎮 Créer un mini jeu</div>
+  </div>
+</div>
+
+<div class="content">
+
+<!-- NARRATION -->
+<div class="g-narration">
+  <div class="g-narration-avatar">🐱</div>
+  <div><strong>Mission : Développeur junior</strong><br>
+  Tu vas apprendre à programmer comme un vrai développeur ! Scratch est utilisé par <strong>des millions d'élèves dans le monde</strong>. Gagne de l'XP et des badges en complétant les défis !</div>
+</div>
+
+<div class="g-mode-selector">
+  <div class="g-mode-btn gm-active" onclick="gSetMode('normal',this)">
+    <span class="gm-icon">🟡</span><span class="gm-name">Normal</span><span class="gm-desc">Cours complet</span>
+  </div>
+  <div class="g-mode-btn" onclick="gSetMode('easy',this)">
+    <span class="gm-icon">🟢</span><span class="gm-name">Guidé</span><span class="gm-desc">Avec indices</span>
+  </div>
+  <div class="g-mode-btn" onclick="gSetMode('hard',this)">
+    <span class="gm-icon">🔴</span><span class="gm-name">Expert</span><span class="gm-desc">XP ×2, sans aide</span>
+  </div>
+</div>
+
+<!-- ═══ S1 : C'EST QUOI SCRATCH ? ═══ -->
+<div class="section" id="s1">
+  <div class="sec-hdr">
+    <div class="sec-n">01</div>
+    <div>
+      <div class="sec-title">C'est quoi Scratch ?</div>
+      <div class="sec-sub">La programmation, c'est partout — et c'est pour toi !</div>
+    </div>
+  </div>
+  <div class="g-objective">Comprendre ce qu'est la programmation et à quoi sert Scratch</div>
+
+  <div class="card cdef">
+    <p><strong>Scratch</strong> est un langage de programmation <strong>visuel</strong> créé par le <em>MIT</em> (Massachusetts Institute of Technology — l'une des meilleures universités du monde). Au lieu d'écrire du texte compliqué, tu assembles des <strong>blocs colorés</strong> comme un puzzle pour donner des instructions à l'ordinateur.</p>
+  </div>
+
+  <p>La programmation est partout dans ta vie quotidienne :</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:12px;margin:16px 0;">
+    <div style="background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center;">
+      <div style="font-size:28px;margin-bottom:8px;">🎮</div>
+      <div style="font-size:12px;font-weight:700;color:var(--txt);margin-bottom:4px;">Jeux vidéo</div>
+      <div style="font-size:11px;color:var(--muted);">Minecraft, Roblox, Fortnite… c'est du code !</div>
+    </div>
+    <div style="background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center;">
+      <div style="font-size:28px;margin-bottom:8px;">📱</div>
+      <div style="font-size:12px;font-weight:700;color:var(--txt);margin-bottom:4px;">Applications</div>
+      <div style="font-size:11px;color:var(--muted);">TikTok, Snapchat, YouTube…</div>
+    </div>
+    <div style="background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center;">
+      <div style="font-size:28px;margin-bottom:8px;">🤖</div>
+      <div style="font-size:12px;font-weight:700;color:var(--txt);margin-bottom:4px;">IA &amp; Robots</div>
+      <div style="font-size:11px;color:var(--muted);">ChatGPT, voitures autonomes…</div>
+    </div>
+    <div style="background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center;">
+      <div style="font-size:28px;margin-bottom:8px;">🚀</div>
+      <div style="font-size:12px;font-weight:700;color:var(--txt);margin-bottom:4px;">Espace</div>
+      <div style="font-size:11px;color:var(--muted);">Les fusées SpaceX guidées par du code !</div>
+    </div>
+    <div style="background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center;">
+      <div style="font-size:28px;margin-bottom:8px;">🏥</div>
+      <div style="font-size:12px;font-weight:700;color:var(--txt);margin-bottom:4px;">Médecine</div>
+      <div style="font-size:11px;color:var(--muted);">Appareils médicaux, IRM, analyses…</div>
+    </div>
+    <div style="background:var(--sc-d);border:1px solid var(--sc-b);border-radius:10px;padding:16px;text-align:center;">
+      <div style="font-size:28px;margin-bottom:8px;">🐱</div>
+      <div style="font-size:12px;font-weight:700;color:var(--sc);margin-bottom:4px;">Scratch</div>
+      <div style="font-size:11px;color:var(--muted);">C'est là que <strong style="color:var(--txt);">toi</strong> tu commences !</div>
+    </div>
+  </div>
+
+  <div class="card clife">
+    <p>La programmation est une des compétences <strong>les plus demandées</strong> au monde. Scratch est utilisé dans <strong>150 pays</strong>, traduit en 70 langues, et accessible <em>gratuitement</em> sur <strong>scratch.mit.edu</strong> — aucune installation nécessaire !</p>
+  </div>
+
+  <div class="card ctip">
+    <p><strong>Pourquoi apprendre Scratch ?</strong> C'est la porte d'entrée idéale vers la programmation. Tu vas créer des animations, des jeux, des histoires interactives — tout en apprenant à <strong>penser de façon logique</strong>.</p>
+  </div>
+
+  <!-- CHALLENGE S1 -->
+  <div class="g-challenge">
+    <div class="g-challenge-header"><span class="g-challenge-tag">⚡ Défi — Section 1</span></div>
+    <div class="g-challenge-q">Scratch a été créé par quelle université célèbre ?</div>
+    <div class="g-challenge-opts" id="gc-s1-opts">
+      <button class="g-copt" onclick="gcAnswer('s1',this,false,'Le MIT (Massachusetts Institute of Technology) a créé Scratch.')">Harvard</button>
+      <button class="g-copt" onclick="gcAnswer('s1',this,true,'Exact ! Le MIT a créé Scratch. C'est l'une des meilleures universités du monde.')">Le MIT</button>
+      <button class="g-copt" onclick="gcAnswer('s1',this,false,'Le MIT (Massachusetts Institute of Technology) a créé Scratch.')">Apple</button>
+      <button class="g-copt" onclick="gcAnswer('s1',this,false,'Le MIT (Massachusetts Institute of Technology) a créé Scratch.')">Google</button>
+    </div>
+    <div class="g-challenge-fb" id="gcf-s1"></div>
+    <div class="g-xp-reward">⚡ +10 XP Interface si correct</div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══ S2 : L'INTERFACE SCRATCH ═══ -->
+<div class="section" id="s2">
+  <div class="sec-hdr">
+    <div class="sec-n">02</div>
+    <div>
+      <div class="sec-title">L'interface Scratch</div>
+      <div class="sec-sub">Découvrir les zones et comprendre leur rôle</div>
+    </div>
+  </div>
+  <div class="g-objective">Identifier et nommer les 5 zones de l'interface Scratch</div>
+
+  <p>Quand tu ouvres Scratch, tu vois plusieurs zones. C'est ton <strong>espace de travail</strong> de programmeur !</p>
+
+  <!-- Schéma interactif de l'interface -->
+  <div style="background:var(--s2);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin:16px 0;">
+    <div style="display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--s1);border-bottom:1px solid var(--border);">
+      <div style="width:10px;height:10px;border-radius:50%;background:#ff5f57;"></div>
+      <div style="width:10px;height:10px;border-radius:50%;background:#febc2e;"></div>
+      <div style="width:10px;height:10px;border-radius:50%;background:#28c840;"></div>
+      <span style="font-size:12px;font-weight:700;color:var(--muted);margin-left:6px;">scratch.mit.edu — Interface</span>
+    </div>
+    <div style="display:grid;grid-template-columns:148px 1fr 230px;min-height:270px;">
+      <!-- Palette -->
+      <div style="background:#1e1e2e;border-right:1px solid var(--border);padding:12px;">
+        <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#888;margin-bottom:10px;padding-left:2px;">Catégories</div>
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <div style="padding:5px 10px;border-radius:6px;background:#4d97ff;color:#fff;font-size:11px;font-weight:700;">🔵 Mouvement</div>
+          <div style="padding:5px 10px;border-radius:6px;background:#9966ff;color:#fff;font-size:11px;font-weight:700;">💜 Apparence</div>
+          <div style="padding:5px 10px;border-radius:6px;background:#cf63cf;color:#fff;font-size:11px;font-weight:700;">🔊 Sons</div>
+          <div style="padding:5px 10px;border-radius:6px;background:#ffab19;color:#1a0e00;font-size:11px;font-weight:700;">🟡 Événements</div>
+          <div style="padding:5px 10px;border-radius:6px;background:#ff8c1a;color:#fff;font-size:11px;font-weight:700;">🟠 Contrôle</div>
+          <div style="padding:5px 10px;border-radius:6px;background:#5cb1d6;color:#fff;font-size:11px;font-weight:700;">🔷 Capteurs</div>
+          <div style="padding:5px 10px;border-radius:6px;background:#59c059;color:#fff;font-size:11px;font-weight:700;">🟢 Opérateurs</div>
+        </div>
+      </div>
+      <!-- Zone script -->
+      <div style="background:var(--s1);padding:16px;border-right:1px solid var(--border);">
+        <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">📜 Zone de script</div>
+        <div class="block-stack">
+          <div class="bv bv-hat bv-events">🚩 Quand ⬛ est cliqué</div>
+          <div class="bv bv-looks">dire <span class="bv-inp">Bonjour !</span> pendant <span class="bv-inp">2</span> sec</div>
+          <div class="bv bv-motion">avancer de <span class="bv-inp">50</span> pas</div>
+          <div class="bv bv-cap bv-control">répéter <span class="bv-inp">4</span> fois</div>
+          <div class="bv bv-motion bv-indent">tourner de <span class="bv-inp">90</span> degrés ↻</div>
+          <div class="bv bv-motion bv-indent">avancer de <span class="bv-inp">80</span> pas</div>
+          <div class="bv bv-foot">fin répéter</div>
+        </div>
+        <div style="border:2px dashed var(--border);border-radius:8px;padding:10px;text-align:center;font-size:11px;color:var(--muted);margin-top:10px;">← Glisse des blocs ici depuis la palette !</div>
+      </div>
+      <!-- Scène + sprites -->
+      <div style="background:var(--s2);display:flex;flex-direction:column;align-items:center;padding:14px;gap:10px;">
+        <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);">🎬 LA SCÈNE</div>
+        <div id="demoStage" style="width:180px;height:135px;background:linear-gradient(180deg,#87ceeb 70%,#228b22 70%);border-radius:8px;border:2px solid var(--border);position:relative;overflow:hidden;cursor:pointer;" onclick="demoAnimate()">
+          <div id="demoSprite" style="position:absolute;font-size:28px;bottom:18px;left:72px;transition:left .5s ease,bottom .5s ease;">🐱</div>
+          <div style="position:absolute;top:6px;right:6px;font-size:9px;font-weight:700;color:rgba(255,255,255,.7);">Clique !</div>
+        </div>
+        <div style="display:flex;gap:6px;">
+          <button onclick="demoAnimate()" style="padding:5px 12px;border-radius:6px;background:#59c059;color:#fff;border:none;font-size:11px;font-weight:700;cursor:pointer;">▶ Jouer</button>
+          <button onclick="demoReset()" style="padding:5px 12px;border-radius:6px;background:#ff6680;color:#fff;border:none;font-size:11px;font-weight:700;cursor:pointer;">⏹ Stop</button>
+        </div>
+        <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);">🐱 Sprites</div>
+        <div style="display:flex;gap:8px;">
+          <div style="width:40px;height:40px;border-radius:8px;background:#4d97ff;border:2px solid #4d97ff;display:flex;align-items:center;justify-content:center;font-size:20px;">🐱</div>
+          <div style="width:40px;height:40px;border-radius:8px;background:var(--s1);border:2px dashed var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--muted);">+</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p style="font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin:20px 0 12px;">Les 5 zones à connaître :</p>
+  <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px;">
+    <div style="display:flex;align-items:flex-start;gap:14px;padding:14px 18px;background:var(--s2);border:1px solid var(--border);border-radius:10px;border-left:4px solid #4d97ff;">
+      <div style="font-size:22px;">🎨</div>
+      <div><div style="font-size:13px;font-weight:800;color:var(--txt);margin-bottom:3px;">Palette de blocs</div><div style="font-size:13px;color:var(--soft);">Ta <strong style="color:var(--txt);">boîte à outils</strong> ! Tous les blocs disponibles, rangés par couleur et catégorie (Mouvement, Apparence, Son…).</div></div>
+    </div>
+    <div style="display:flex;align-items:flex-start;gap:14px;padding:14px 18px;background:var(--s2);border:1px solid var(--border);border-radius:10px;border-left:4px solid var(--sc);">
+      <div style="font-size:22px;">📜</div>
+      <div><div style="font-size:13px;font-weight:800;color:var(--txt);margin-bottom:3px;">Zone de script</div><div style="font-size:13px;color:var(--soft);">C'est là que tu <strong style="color:var(--txt);">construis ton programme</strong>. Tu glisses-déposes les blocs comme un puzzle pour les assembler.</div></div>
+    </div>
+    <div style="display:flex;align-items:flex-start;gap:14px;padding:14px 18px;background:var(--s2);border:1px solid var(--border);border-radius:10px;border-left:4px solid var(--teal);">
+      <div style="font-size:22px;">🎬</div>
+      <div><div style="font-size:13px;font-weight:800;color:var(--txt);margin-bottom:3px;">La Scène</div><div style="font-size:13px;color:var(--soft);">L'<strong style="color:var(--txt);">écran de jeu</strong> où tout se passe ! Tes personnages bougent ici. La scène mesure <strong style="color:var(--txt);">480 × 360 pixels</strong>.</div></div>
+    </div>
+    <div style="display:flex;align-items:flex-start;gap:14px;padding:14px 18px;background:var(--s2);border:1px solid var(--border);border-radius:10px;border-left:4px solid var(--amber);">
+      <div style="font-size:22px;">🐱</div>
+      <div><div style="font-size:13px;font-weight:800;color:var(--txt);margin-bottom:3px;">Les Sprites</div><div style="font-size:13px;color:var(--soft);">Tes <strong style="color:var(--txt);">personnages et objets</strong>. Le chat Scratchy est le sprite par défaut. Tu peux en ajouter autant que tu veux !</div></div>
+    </div>
+    <div style="display:flex;align-items:flex-start;gap:14px;padding:14px 18px;background:var(--s2);border:1px solid var(--border);border-radius:10px;border-left:4px solid var(--lime);">
+      <div style="font-size:22px;">🎭</div>
+      <div><div style="font-size:13px;font-weight:800;color:var(--txt);margin-bottom:3px;">L'arrière-plan</div><div style="font-size:13px;color:var(--soft);">Le <strong style="color:var(--txt);">décor</strong> de ta scène. Ciel, salle, espace… ou dessiné par toi-même !</div></div>
+    </div>
+  </div>
+
+  <div class="card cwarn">
+    <p><strong>Ne confonds pas !</strong> Les blocs dans la palette sont juste des modèles. Pour qu'ils fonctionnent, tu dois les <strong>glisser-déposer dans la zone de script</strong>. Sinon, rien ne se passe !</p>
+  </div>
+
+  <div class="g-challenge">
+    <div class="g-challenge-header"><span class="g-challenge-tag">⚡ Défi — Section 2</span></div>
+    <div class="g-challenge-q">Où assembles-tu les blocs pour créer ton programme dans Scratch ?</div>
+    <div class="g-challenge-opts">
+      <button class="g-copt" onclick="gcAnswer('s2',this,false,'La palette contient les modèles de blocs, ce n'est pas là qu'on programme.')">Dans la palette</button>
+      <button class="g-copt" onclick="gcAnswer('s2',this,true,'Exactement ! La zone de script est l'endroit où tu construis ton programme.')">Dans la zone de script</button>
+      <button class="g-copt" onclick="gcAnswer('s2',this,false,'La scène montre le résultat, ce n'est pas là qu'on programme.')">Sur la scène</button>
+      <button class="g-copt" onclick="gcAnswer('s2',this,false,'Les sprites sont les personnages, pas l'espace de programmation.')">Dans les sprites</button>
+    </div>
+    <div class="g-challenge-fb" id="gcf-s2"></div>
+    <div class="g-xp-reward">⚡ +15 XP Interface si correct</div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══ S3 : LES BLOCS DE BASE ═══ -->
+<div class="section" id="s3">
+  <div class="sec-hdr">
+    <div class="sec-n">03</div>
+    <div>
+      <div class="sec-title">Les blocs de base</div>
+      <div class="sec-sub">Mouvement · Apparence · Sons · Événements · Ma première séquence !</div>
+    </div>
+  </div>
+  <div class="g-objective">Connaître les blocs essentiels et créer sa première séquence d'instructions</div>
+
+  <p>Les blocs sont regroupés par <strong>couleur</strong> selon leur catégorie. Chaque couleur a un rôle précis.</p>
+
+  <div style="background:rgba(77,151,255,.06);border:1px solid rgba(77,151,255,.2);border-radius:12px;padding:18px 22px;margin-bottom:10px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+      <div style="width:12px;height:12px;border-radius:4px;background:#4d97ff;flex-shrink:0;"></div>
+      <div style="font-size:14px;font-weight:800;color:#4d97ff;">🔵 Mouvement — Faire bouger le sprite</div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin:8px 0;">
+      <div class="bv bv-motion">avancer de <span class="bv-inp">10</span> pas</div>
+      <div class="bv bv-motion">tourner de <span class="bv-inp">15</span> degrés ↻</div>
+      <div class="bv bv-motion">aller à x: <span class="bv-inp">0</span> y: <span class="bv-inp">0</span></div>
+      <div class="bv bv-motion">rebondir si le bord est atteint</div>
+    </div>
+    <div style="font-size:12px;color:var(--soft);margin-top:6px;">💡 "avancer de 10 pas" fait bouger le sprite de 10 pixels dans la direction où il regarde.</div>
+  </div>
+
+  <div style="background:rgba(153,102,255,.06);border:1px solid rgba(153,102,255,.2);border-radius:12px;padding:18px 22px;margin-bottom:10px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+      <div style="width:12px;height:12px;border-radius:4px;background:#9966ff;flex-shrink:0;"></div>
+      <div style="font-size:14px;font-weight:800;color:#9966ff;">💜 Apparence — Changer ce qu'on voit</div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin:8px 0;">
+      <div class="bv bv-looks">dire <span class="bv-inp">Bonjour !</span> pendant <span class="bv-inp">2</span> sec</div>
+      <div class="bv bv-looks">changer la taille de <span class="bv-inp">10</span></div>
+      <div class="bv bv-looks">cacher</div>
+      <div class="bv bv-looks">montrer</div>
+    </div>
+    <div style="font-size:12px;color:var(--soft);margin-top:6px;">💡 "dire … pendant … sec" affiche une bulle de dialogue au-dessus du sprite, comme dans une BD !</div>
+  </div>
+
+  <div style="background:rgba(255,171,25,.06);border:1px solid rgba(255,171,25,.2);border-radius:12px;padding:18px 22px;margin-bottom:10px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+      <div style="width:12px;height:12px;border-radius:4px;background:#ffab19;flex-shrink:0;"></div>
+      <div style="font-size:14px;font-weight:800;color:#c87000;">🟡 Événements — Déclencher une action</div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin:8px 0;">
+      <div class="bv bv-hat bv-events">🚩 Quand ⬛ est cliqué</div>
+      <div class="bv bv-hat bv-events">Quand ce sprite est cliqué</div>
+      <div class="bv bv-hat bv-events">Quand la touche <span class="bv-inp" style="color:inherit;">espace</span> est pressée</div>
+    </div>
+    <div style="font-size:12px;color:var(--soft);margin-top:6px;">💡 Les blocs Événements sont <strong style="color:var(--txt);">indispensables</strong> ! Ce sont les "boutons ON" de ton programme — sans eux, rien ne démarre.</div>
+  </div>
+
+  <div style="background:rgba(255,140,66,.06);border:1px solid rgba(255,140,66,.2);border-radius:12px;padding:18px 22px;margin-bottom:16px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+      <div style="width:12px;height:12px;border-radius:4px;background:#ff8c1a;flex-shrink:0;"></div>
+      <div style="font-size:14px;font-weight:800;color:#ff8c1a;">🟠 Contrôle — Boucles et décisions</div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin:8px 0;">
+      <div class="bv bv-cap bv-control">répéter <span class="bv-inp">10</span> fois</div>
+      <div class="bv bv-cap bv-control">répéter indéfiniment</div>
+      <div class="bv bv-cap bv-control">si &lt;condition&gt; alors</div>
+      <div class="bv bv-control">attendre <span class="bv-inp">1</span> secondes</div>
+    </div>
+  </div>
+
+  <p style="font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin:20px 0 8px;">Ma première séquence d'instructions :</p>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:16px 0;align-items:flex-start;">
+    <div class="block-stack">
+      <div class="bv bv-hat bv-events">🚩 Quand ⬛ est cliqué</div>
+      <div class="bv bv-looks">dire <span class="bv-inp">Salut ! Je suis Scratchy !</span> 2 sec</div>
+      <div class="bv bv-motion">avancer de <span class="bv-inp">100</span> pas</div>
+      <div class="bv bv-sound">jouer le son <span class="bv-inp">Miaou</span> jusqu'au bout</div>
+      <div class="bv bv-motion">tourner de <span class="bv-inp">360</span> degrés ↻</div>
+      <div class="bv bv-looks">dire <span class="bv-inp">J'ai fait un tour !</span> 2 sec</div>
+    </div>
+    <div>
+      <div class="card cmet" style="margin:0;">
+        <p><strong>Règle d'or des séquences :</strong></p>
+        <div class="steps">
+          <div class="sr"><div class="slbl">Principe</div><div class="seq">L'ordinateur lit les blocs <span class="h">de haut en bas</span></div></div>
+          <div class="sr"><div class="slbl">Ordre crucial</div><div class="seq">Changer l'ordre <span class="h">change le résultat</span></div></div>
+          <div class="sr"><div class="slbl">Déclencheur</div><div class="seq">On commence par un bloc <span class="h">Événement</span></div></div>
+          <div class="sr"><div class="slbl">Précision</div><div class="seq">L'ordinateur fait <span class="ok">exactement</span> ce qu'on lui dit</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card cwarn">
+    <p><strong>Erreurs fréquentes à éviter !</strong></p>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:10px;">
+      <div style="display:flex;align-items:flex-start;gap:10px;padding:10px;background:var(--s1);border-radius:8px;border:1px solid var(--border);">
+        <span>❌</span><div><strong style="color:var(--rose);font-size:12px;">Oublier le bloc déclencheur</strong><br><span style="font-size:12px;color:var(--soft);">Sans "Quand ⬛ est cliqué", ton programme ne démarre jamais !</span></div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:10px;padding:10px;background:var(--s1);border-radius:8px;border:1px solid var(--border);">
+        <span>❌</span><div><strong style="color:var(--rose);font-size:12px;">Blocs déconnectés</strong><br><span style="font-size:12px;color:var(--soft);">Si tes blocs ne sont pas bien emboîtés, ils ne s'exécutent pas ensemble.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="g-challenge">
+    <div class="g-challenge-header"><span class="g-challenge-tag">⚡ Défi — Section 3</span></div>
+    <div class="g-challenge-q">Dans quel ordre l'ordinateur exécute-t-il les blocs dans une séquence Scratch ?</div>
+    <div class="g-challenge-opts">
+      <button class="g-copt" onclick="gcAnswer('s3',this,false,'L'ordinateur lit les blocs de haut en bas, pas au hasard.')">Dans un ordre aléatoire</button>
+      <button class="g-copt" onclick="gcAnswer('s3',this,false,'Non — l'ordre est de haut en bas.')">De bas en haut</button>
+      <button class="g-copt" onclick="gcAnswer('s3',this,true,'Exactement ! L'ordinateur lit toujours les blocs de haut en bas, dans l'ordre.')">De haut en bas</button>
+      <button class="g-copt" onclick="gcAnswer('s3',this,false,'L'ordre est imposé — toujours de haut en bas.')">On peut choisir</button>
+    </div>
+    <div class="g-challenge-fb" id="gcf-s3"></div>
+    <div class="g-xp-reward">⚡ +15 XP Interface si correct</div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══ S4 : BOUCLES & CONDITIONS ═══ -->
+<div class="section" id="s4">
+  <div class="sec-hdr">
+    <div class="sec-n">04</div>
+    <div>
+      <div class="sec-title">Boucles &amp; Conditions</div>
+      <div class="sec-sub">Répéter intelligemment et prendre des décisions</div>
+    </div>
+  </div>
+  <div class="g-objective">Utiliser les boucles "répéter" et les structures "SI … ALORS" dans un programme</div>
+
+  <p style="font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin:0 0 12px;">4.1 — Les Boucles : répéter sans se fatiguer</p>
+
+  <div class="card cdef">
+    <p>Une <strong>boucle</strong> permet de répéter des instructions plusieurs fois sans avoir à les réécrire à chaque fois. Imagine : faire bouger un personnage 100 fois — écrire 100 blocs serait ridicule ! La boucle fait ça en <strong>3 blocs</strong>.</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0;">
+    <div style="background:var(--rose-d);border:1px solid var(--rose-b);border-radius:10px;padding:16px;">
+      <div style="font-size:11px;font-weight:700;color:var(--rose);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;">❌ SANS boucle (100 blocs !)</div>
+      <div class="bv bv-motion" style="font-size:11px;padding:5px 10px;display:block;margin:2px 0;">avancer de 10 pas</div>
+      <div class="bv bv-motion" style="font-size:11px;padding:5px 10px;display:block;margin:2px 0;">avancer de 10 pas</div>
+      <div class="bv bv-motion" style="font-size:11px;padding:5px 10px;display:block;margin:2px 0;">avancer de 10 pas</div>
+      <div style="font-size:11px;color:var(--rose);font-weight:700;text-align:center;padding:6px;">… × 97 blocs en plus 😩</div>
+    </div>
+    <div style="background:var(--teal-d);border:1px solid var(--teal-b);border-radius:10px;padding:16px;">
+      <div style="font-size:11px;font-weight:700;color:var(--teal);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;">✅ AVEC boucle (3 blocs !)</div>
+      <div class="block-stack" style="padding:8px;gap:2px;">
+        <div class="bv bv-cap bv-control" style="font-size:11px;padding:5px 10px;">répéter <span class="bv-inp">100</span> fois</div>
+        <div class="bv bv-motion bv-indent" style="font-size:11px;padding:5px 10px;">avancer de 10 pas</div>
+        <div class="bv bv-foot" style="font-size:11px;padding:5px 10px;">fin répéter 😎</div>
+      </div>
+    </div>
+  </div>
+
+  <p style="font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin:20px 0 10px;">Les 3 boucles Scratch à connaître :</p>
+  <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;">
+    <div style="background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:16px 20px;">
+      <div style="margin-bottom:8px;"><div class="bv bv-cap bv-control" style="font-size:12px;padding:5px 12px;margin:0;">répéter <span class="bv-inp">N</span> fois</div></div>
+      <div style="font-size:13px;font-weight:700;color:var(--txt);margin-bottom:4px;">Répéter un nombre précis de fois</div>
+      <div style="font-size:12px;color:var(--soft);">Ex : répéter 4 fois → avancer + tourner 90° → <strong style="color:var(--txt);">dessine un carré !</strong></div>
+    </div>
+    <div style="background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:16px 20px;">
+      <div style="margin-bottom:8px;"><div class="bv bv-cap bv-control" style="font-size:12px;padding:5px 12px;margin:0;">répéter indéfiniment</div></div>
+      <div style="font-size:13px;font-weight:700;color:var(--txt);margin-bottom:4px;">Répéter pour toujours (∞)</div>
+      <div style="font-size:12px;color:var(--soft);">Parfait pour les jeux — tourne jusqu'au clic Stop !</div>
+    </div>
+    <div style="background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:16px 20px;">
+      <div style="margin-bottom:8px;"><div class="bv bv-cap bv-control" style="font-size:12px;padding:5px 12px;margin:0;">répéter jusqu'à &lt;condition&gt;</div></div>
+      <div style="font-size:13px;font-weight:700;color:var(--txt);margin-bottom:4px;">Répéter jusqu'à ce qu'une condition soit vraie</div>
+      <div style="font-size:12px;color:var(--soft);">Ex : répéter jusqu'à toucher le bord → avancer</div>
+    </div>
+  </div>
+
+  <div class="card cex">
+    <p><strong>Exemple interactif :</strong> Dessiner un carré avec une boucle — le sprite avance et tourne 4 fois :</p>
+    <div style="display:grid;grid-template-columns:auto 1fr;gap:24px;margin-top:14px;align-items:center;">
+      <div class="block-stack">
+        <div class="bv bv-hat bv-events">🚩 Quand ⬛ est cliqué</div>
+        <div class="bv bv-cap bv-control">répéter <span class="bv-inp">4</span> fois</div>
+        <div class="bv bv-motion bv-indent">avancer de <span class="bv-inp">100</span> pas</div>
+        <div class="bv bv-motion bv-indent">tourner de <span class="bv-inp">90</span> degrés ↻</div>
+        <div class="bv bv-foot">fin répéter</div>
+      </div>
+      <div style="text-align:center;">
+        <canvas id="squareCanvas" width="140" height="140" style="background:#fff;border-radius:8px;border:1px solid var(--border);display:block;margin:0 auto 10px;"></canvas>
+        <button onclick="drawSquare()" style="padding:7px 18px;border-radius:7px;background:#4d97ff;border:none;color:#fff;font-size:12px;font-weight:700;cursor:pointer;">▶ Dessiner !</button>
+      </div>
+    </div>
+    <p style="font-size:13px;color:var(--soft);margin-top:12px;">4 côtés × 90° = 360° → <strong style="color:var(--txt);">le sprite trace un carré !</strong></p>
+  </div>
+
+  <p style="font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin:28px 0 12px;">4.2 — Les Conditions : SI … ALORS</p>
+
+  <div class="card cdef">
+    <p>Une <strong>condition</strong> permet à ton programme de <strong>prendre des décisions</strong>. C'est comme un carrefour : si la condition est vraie, le programme prend un chemin ; sinon, il en prend un autre.</p>
+    <div style="text-align:center;margin:14px 0;font-family:'DM Mono';font-size:18px;color:var(--sc);font-weight:700;">SI &lt;condition&gt; ALORS … SINON …</div>
+  </div>
+
+  <div style="background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:20px;margin:14px 0;">
+    <div style="font-size:12px;font-weight:700;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;">🌦️ Analogie : la météo du matin</div>
+    <div style="text-align:center;">
+      <div style="background:var(--amber-d);border:1px solid var(--amber-b);border-radius:10px;padding:10px 20px;font-size:13px;font-weight:700;color:var(--amber);display:inline-block;margin-bottom:16px;">☁️ Est-ce qu'il pleut ?</div>
+      <div style="display:flex;justify-content:center;gap:40px;flex-wrap:wrap;">
+        <div style="text-align:center;">
+          <div style="width:2px;height:20px;background:var(--teal);margin:0 auto 6px;"></div>
+          <div style="background:var(--teal-d);border:1px solid var(--teal-b);border-radius:8px;padding:8px 16px;font-size:12px;font-weight:700;color:var(--teal);">OUI ✅<br>Prends ton parapluie 🌂</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="width:2px;height:20px;background:var(--rose);margin:0 auto 6px;"></div>
+          <div style="background:var(--rose-d);border:1px solid var(--rose-b);border-radius:8px;padding:8px 16px;font-size:12px;font-weight:700;color:var(--rose);">NON ❌<br>Mets tes lunettes 😎</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card cex">
+    <p><strong>Exemple Scratch :</strong> Un personnage qui rebondit dès qu'il touche le bord :</p>
+    <div class="block-stack" style="margin:12px 0;">
+      <div class="bv bv-hat bv-events">🚩 Quand ⬛ est cliqué</div>
+      <div class="bv bv-cap bv-control">répéter indéfiniment</div>
+      <div class="bv bv-motion bv-indent">avancer de <span class="bv-inp">5</span> pas</div>
+      <div class="bv bv-cap bv-control bv-indent">si &lt;touche le bord ?&gt; alors</div>
+      <div class="bv bv-motion bv-indent2">rebondir si le bord est atteint</div>
+      <div class="bv bv-looks bv-indent2">dire <span class="bv-inp">Aïe !</span> pendant <span class="bv-inp">1</span> sec</div>
+      <div class="bv bv-foot bv-indent">fin si</div>
+      <div class="bv bv-foot">fin répéter</div>
+    </div>
+  </div>
+
+  <div class="g-challenge">
+    <div class="g-challenge-header"><span class="g-challenge-tag">⚡ Défi — Section 4</span></div>
+    <div class="g-challenge-q">Je veux faire tourner un sprite en cercle indéfiniment dans Scratch. Quel bloc utiliser ?</div>
+    <div class="g-challenge-opts">
+      <button class="g-copt" onclick="gcAnswer('s4',this,false,'répéter N fois s'arrête après N tours.')">répéter 10 fois</button>
+      <button class="g-copt" onclick="gcAnswer('s4',this,true,'Exact ! répéter indéfiniment tourne en boucle jusqu'au clic Stop.')">répéter indéfiniment</button>
+      <button class="g-copt" onclick="gcAnswer('s4',this,false,'si … alors sert à décider, pas à répéter.')">si … alors</button>
+      <button class="g-copt" onclick="gcAnswer('s4',this,false,'C'est un bloc Mouvement, pas une boucle.')">avancer de 10 pas</button>
+    </div>
+    <div class="g-challenge-fb" id="gcf-s4"></div>
+    <div class="g-xp-reward">⚡ +20 XP Boucles si correct</div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══ S5 : COORDONNÉES ═══ -->
+<div class="section" id="s5">
+  <div class="sec-hdr">
+    <div class="sec-n">05</div>
+    <div>
+      <div class="sec-title">Coordonnées dans Scratch</div>
+      <div class="sec-sub">Se repérer dans la scène comme sur un plan</div>
+    </div>
+  </div>
+  <div class="g-objective">Comprendre le système de coordonnées (x, y) de la scène Scratch</div>
+
+  <div class="card cdef">
+    <p>Dans Scratch, la scène est comme une <strong>carte avec des coordonnées</strong>. Chaque position est repérée par deux nombres : <strong>x</strong> (horizontal, gauche-droite) et <strong>y</strong> (vertical, bas-haut).</p>
+    <p style="margin-top:8px;">👉 C'est exactement le <strong>repère orthogonal</strong> que tu apprends en maths !</p>
+  </div>
+
+  <div style="background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:20px;margin:16px 0;text-align:center;">
+    <div style="font-size:12px;font-weight:700;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;">🗺️ La scène Scratch (480 × 360 pixels)</div>
+    <svg viewBox="0 0 500 360" style="max-width:480px;width:100%;display:block;margin:0 auto;" id="coordSVG">
+      <rect x="50" y="20" width="400" height="300" fill="#87ceeb" rx="8"/>
+      <rect x="50" y="230" width="400" height="90" fill="#228b22"/>
+      <line x1="250" y1="20" x2="250" y2="320" stroke="rgba(255,255,255,.6)" stroke-width="1.5" stroke-dasharray="5,4"/>
+      <line x1="50" y1="170" x2="450" y2="170" stroke="rgba(255,255,255,.6)" stroke-width="1.5" stroke-dasharray="5,4"/>
+      <text x="455" y="174" fill="white" font-size="11" font-weight="700" font-family="sans-serif">x →</text>
+      <text x="253" y="16" fill="white" font-size="11" font-weight="700" font-family="sans-serif">↑ y</text>
+      <text x="50" y="183" fill="rgba(255,255,255,.8)" font-size="9" font-weight="700" font-family="sans-serif">-240</text>
+      <text x="432" y="183" fill="rgba(255,255,255,.8)" font-size="9" font-weight="700" font-family="sans-serif">240</text>
+      <text x="254" y="30" fill="rgba(255,255,255,.8)" font-size="9" font-weight="700" font-family="sans-serif">180</text>
+      <text x="254" y="318" fill="rgba(255,255,255,.8)" font-size="9" font-weight="700" font-family="sans-serif">-180</text>
+      <circle cx="250" cy="170" r="5" fill="white"/>
+      <text x="236" y="186" fill="rgba(255,255,255,.9)" font-size="10" font-weight="800" font-family="sans-serif">(0 , 0)</text>
+      <text id="coordSprite" x="222" y="178" font-size="28" style="cursor:pointer;user-select:none;" onclick="moveSpriteDemo()">🐱</text>
+      <rect id="coordClickZone" x="208" y="148" width="50" height="40" fill="transparent" style="cursor:pointer;" onclick="moveSpriteDemo()"/>
+      <rect x="55" y="25" width="132" height="28" fill="rgba(0,0,0,.55)" rx="6"/>
+      <text id="coordLabel" x="63" y="43" fill="white" font-size="11" font-weight="700" font-family="sans-serif">x: 0  y: 0</text>
+    </svg>
+    <div style="font-size:12px;color:var(--soft);margin-top:10px;font-style:italic;">👆 Clique sur le chat pour le déplacer et voir ses coordonnées !</div>
+  </div>
+
+  <div style="overflow-x:auto;margin:14px 0;">
+    <table class="stat-table">
+      <thead><tr><th>Position</th><th>x</th><th>y</th><th>Où sur la scène ?</th></tr></thead>
+      <tbody>
+        <tr><td>Centre</td><td class="hi">0</td><td class="hi">0</td><td>Exactement au milieu</td></tr>
+        <tr><td>Bord droit</td><td class="hi2">240</td><td>0</td><td>Tout à droite</td></tr>
+        <tr><td>Bord gauche</td><td class="hi3">-240</td><td>0</td><td>Tout à gauche</td></tr>
+        <tr><td>En haut</td><td>0</td><td class="hi5">180</td><td>Tout en haut</td></tr>
+        <tr><td>En bas</td><td>0</td><td class="hi4">-180</td><td>Tout en bas</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card ctip">
+    <p><strong>Astuce mémo :</strong> La lettre <strong style="color:var(--sky);">X</strong> s'étend horizontalement (bras à gauche et à droite). La lettre <strong style="color:var(--teal);">Y</strong> remonte vers le haut. Pense à ça pour te souvenir du sens des axes !</p>
+  </div>
+
+  <div class="g-challenge">
+    <div class="g-challenge-header"><span class="g-challenge-tag">⚡ Défi — Section 5</span></div>
+    <div class="g-challenge-q">Un sprite est placé exactement au centre de la scène Scratch. Quelles sont ses coordonnées ?</div>
+    <div class="g-challenge-opts">
+      <button class="g-copt" onclick="gcAnswer('s5',this,false,'Le centre est à (0,0), pas à (240,180) qui est le coin haut droit.')">x: 240, y: 180</button>
+      <button class="g-copt" onclick="gcAnswer('s5',this,true,'Exact ! Le centre de la scène est toujours le point (0, 0).')">x: 0, y: 0</button>
+      <button class="g-copt" onclick="gcAnswer('s5',this,false,'(-240, -180) est le coin en bas à gauche.')">x: -240, y: -180</button>
+      <button class="g-copt" onclick="gcAnswer('s5',this,false,'(100, 100) n'est pas le centre.')">x: 100, y: 100</button>
+    </div>
+    <div class="g-challenge-fb" id="gcf-s5"></div>
+    <div class="g-xp-reward">⚡ +15 XP Logique si correct</div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══ S6 : MINI PROJETS ═══ -->
+<div class="section" id="s6">
+  <div class="sec-hdr">
+    <div class="sec-n">06</div>
+    <div>
+      <div class="sec-title">Mini Projets guidés</div>
+      <div class="sec-sub">Crée de vraies animations et ton premier jeu !</div>
+    </div>
+  </div>
+
+  <!-- Projet 1 -->
+  <div style="background:var(--s2);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin:14px 0;">
+    <div style="padding:18px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px;">
+      <div style="font-size:30px;width:50px;height:50px;display:flex;align-items:center;justify-content:center;background:var(--sc-d);border:1px solid var(--sc-b);border-radius:12px;flex-shrink:0;">💬</div>
+      <div>
+        <div style="font-size:15px;font-weight:700;color:var(--txt);margin-bottom:4px;">Projet 1 — Le Chat qui parle</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;background:var(--teal-d);color:var(--teal);border:1px solid var(--teal-b);">🟢 Débutant</span>
+          <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;background:var(--s1);color:var(--muted);border:1px solid var(--border);">⏱️ 10 min</span>
+          <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;background:var(--s1);color:var(--muted);border:1px solid var(--border);">📜 Séquence</span>
+        </div>
+      </div>
+    </div>
+    <div style="padding:18px 22px;">
+      <p style="margin-bottom:14px;font-size:13.5px;color:var(--soft);">Crée une animation où Scratchy se présente, se déplace et fait un tour complet. Ton tout premier programme !</p>
+      <ol style="list-style:none;display:flex;flex-direction:column;gap:8px;">
+        <li style="display:flex;align-items:flex-start;gap:12px;font-size:13.5px;line-height:1.5;"><div style="width:24px;height:24px;border-radius:50%;background:var(--sc);color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">1</div><div>Ouvre <strong>scratch.mit.edu</strong> — ton projet est vide par défaut.</div></li>
+        <li style="display:flex;align-items:flex-start;gap:12px;font-size:13.5px;line-height:1.5;"><div style="width:24px;height:24px;border-radius:50%;background:var(--sc);color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">2</div><div>Ajoute le bloc <strong>Quand ⬛ est cliqué</strong> (Événements, jaune).</div></li>
+        <li style="display:flex;align-items:flex-start;gap:12px;font-size:13.5px;line-height:1.5;"><div style="width:24px;height:24px;border-radius:50%;background:var(--sc);color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">3</div><div>Connecte <strong>dire "Salut ! Je suis Scratchy 🐱" pendant 2 secondes</strong> (Apparence, violet).</div></li>
+        <li style="display:flex;align-items:flex-start;gap:12px;font-size:13.5px;line-height:1.5;"><div style="width:24px;height:24px;border-radius:50%;background:var(--sc);color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">4</div><div>Ajoute <strong>avancer de 100 pas</strong> (Mouvement, bleu).</div></li>
+        <li style="display:flex;align-items:flex-start;gap:12px;font-size:13.5px;line-height:1.5;"><div style="width:24px;height:24px;border-radius:50%;background:var(--sc);color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">5</div><div>Ajoute <strong>tourner de 360 degrés</strong> puis <strong>dire "Je suis un champion !" pendant 2 secondes</strong>.</div></li>
+        <li style="display:flex;align-items:flex-start;gap:12px;font-size:13.5px;line-height:1.5;"><div style="width:24px;height:24px;border-radius:50%;background:var(--sc);color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">6</div><div>Clique sur le drapeau vert 🚩 et observe la magie !</div></li>
+      </ol>
+      <div style="margin-top:14px;padding:10px 14px;background:var(--amber-d);border:1px solid var(--amber-b);border-radius:8px;font-size:12.5px;color:var(--amber);">💡 <strong>Conseil :</strong> Si le chat sort de l'écran, ajoute au début : <em>aller à x: 0 y: 0</em> pour le recentrer.</div>
+      <div style="margin-top:8px;padding:10px 14px;background:var(--violet-d);border:1px solid var(--violet-b);border-radius:8px;font-size:12.5px;color:var(--violet);">🚀 <strong>Pour aller plus loin :</strong> Ajoute <em>jouer le son Miaou jusqu'au bout</em> après le dernier "dire" !</div>
+    </div>
+  </div>
+
+  <!-- Projet 2 -->
+  <div style="background:var(--s2);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin:14px 0;">
+    <div style="padding:18px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px;">
+      <div style="font-size:30px;width:50px;height:50px;display:flex;align-items:center;justify-content:center;background:var(--violet-d);border:1px solid var(--violet-b);border-radius:12px;flex-shrink:0;">🌀</div>
+      <div>
+        <div style="font-size:15px;font-weight:700;color:var(--txt);margin-bottom:4px;">Projet 2 — La Spirale magique</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;background:var(--amber-d);color:var(--amber);border:1px solid var(--amber-b);">🟡 Intermédiaire</span>
+          <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;background:var(--s1);color:var(--muted);border:1px solid var(--border);">⏱️ 15 min</span>
+          <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;background:var(--s1);color:var(--muted);border:1px solid var(--border);">🔁 Boucle</span>
+        </div>
+      </div>
+    </div>
+    <div style="padding:18px 22px;">
+      <p style="margin-bottom:14px;font-size:13.5px;color:var(--soft);">Utilise une boucle et l'extension Stylo pour dessiner une spirale colorée automatiquement !</p>
+      <ol style="list-style:none;display:flex;flex-direction:column;gap:8px;">
+        <li style="display:flex;align-items:flex-start;gap:12px;font-size:13.5px;line-height:1.5;"><div style="width:24px;height:24px;border-radius:50%;background:var(--violet);color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">1</div><div>Active l'extension <strong>Stylo</strong> (icône puzzle en bas à gauche de Scratch).</div></li>
+        <li style="display:flex;align-items:flex-start;gap:12px;font-size:13.5px;line-height:1.5;"><div style="width:24px;height:24px;border-radius:50%;background:var(--violet);color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">2</div><div><strong>Quand ⬛ est cliqué</strong> → <strong>effacer tout</strong> → <strong>aller à x: 0 y: 0</strong> → <strong>stylo en position basse</strong>.</div></li>
+        <li style="display:flex;align-items:flex-start;gap:12px;font-size:13.5px;line-height:1.5;"><div style="width:24px;height:24px;border-radius:50%;background:var(--violet);color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">3</div><div>Crée une boucle <strong>répéter 360 fois</strong>.</div></li>
+        <li style="display:flex;align-items:flex-start;gap:12px;font-size:13.5px;line-height:1.5;"><div style="width:24px;height:24px;border-radius:50%;background:var(--violet);color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">4</div><div>Dans la boucle : <strong>avancer de 1 pas</strong> + <strong>tourner de 1 degré</strong> + <strong>changer la couleur du stylo de 1</strong>.</div></li>
+        <li style="display:flex;align-items:flex-start;gap:12px;font-size:13.5px;line-height:1.5;"><div style="width:24px;height:24px;border-radius:50%;background:var(--violet);color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">5</div><div>Lance et admire ta spirale arc-en-ciel !</div></li>
+      </ol>
+      <div style="margin-top:14px;padding:10px 14px;background:var(--amber-d);border:1px solid var(--amber-b);border-radius:8px;font-size:12.5px;color:var(--amber);">💡 <strong>Conseil :</strong> Change les valeurs d'avancer et de tourner pour obtenir des formes différentes !</div>
+    </div>
+  </div>
+
+  <!-- Projet 3 -->
+  <div style="background:var(--s2);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin:14px 0;">
+    <div style="padding:18px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px;">
+      <div style="font-size:30px;width:50px;height:50px;display:flex;align-items:center;justify-content:center;background:var(--rose-d);border:1px solid var(--rose-b);border-radius:12px;flex-shrink:0;">🎮</div>
+      <div>
+        <div style="font-size:15px;font-weight:700;color:var(--txt);margin-bottom:4px;">Projet 3 — Mini jeu : Attrape le chat !</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;background:var(--rose-d);color:var(--rose);border:1px solid var(--rose-b);">🔴 Avancé</span>
+          <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;background:var(--s1);color:var(--muted);border:1px solid var(--border);">⏱️ 25 min</span>
+          <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;background:var(--s1);color:var(--muted);border:1px solid var(--border);">🔁 Boucle + 🧠 Condition</span>
+        </div>
+      </div>
+    </div>
+    <div style="padding:18px 22px;">
+      <p style="margin-bottom:14px;font-size:13.5px;color:var(--soft);">Le chat se déplace aléatoirement — clique dessus pour marquer des points. Ton premier vrai jeu !</p>
+      <ol style="list-style:none;display:flex;flex-direction:column;gap:8px;">
+        <li style="display:flex;align-items:flex-start;gap:12px;font-size:13.5px;line-height:1.5;"><div style="width:24px;height:24px;border-radius:50%;background:var(--rose);color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">1</div><div>Crée une variable <strong>Score</strong> (catégorie Variables, orange).</div></li>
+        <li style="display:flex;align-items:flex-start;gap:12px;font-size:13.5px;line-height:1.5;"><div style="width:24px;height:24px;border-radius:50%;background:var(--rose);color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">2</div><div>Script 1 sur le Chat : <strong>Quand ⬛ est cliqué</strong> → <strong>mettre Score à 0</strong> → <strong>répéter indéfiniment</strong> → <strong>aller à position aléatoire</strong> → <strong>attendre 1 secondes</strong>.</div></li>
+        <li style="display:flex;align-items:flex-start;gap:12px;font-size:13.5px;line-height:1.5;"><div style="width:24px;height:24px;border-radius:50%;background:var(--rose);color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">3</div><div>Script 2 : <strong>Quand ce sprite est cliqué</strong> → <strong>ajouter 1 à Score</strong> → <strong>jouer le son Miaou</strong>.</div></li>
+        <li style="display:flex;align-items:flex-start;gap:12px;font-size:13.5px;line-height:1.5;"><div style="width:24px;height:24px;border-radius:50%;background:var(--rose);color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">4</div><div>Dans la boucle, ajoute : <strong>si Score = 10 alors</strong> → <strong>dire "Tu as gagné !" 3 sec</strong> → <strong>stopper tout</strong>.</div></li>
+      </ol>
+      <div style="margin-top:14px;padding:10px 14px;background:var(--amber-d);border:1px solid var(--amber-b);border-radius:8px;font-size:12.5px;color:var(--amber);">💡 <strong>Conseil :</strong> Réduis l'attente à 0.5 sec pour un jeu plus difficile. Augmente à 2 sec pour plus facile.</div>
+      <div style="margin-top:8px;padding:10px 14px;background:var(--violet-d);border:1px solid var(--violet-b);border-radius:8px;font-size:12.5px;color:var(--violet);">🚀 <strong>Pour aller plus loin :</strong> Ajoute une variable "Temps" qui diminue — le joueur doit attraper 10 chats avant que le temps soit écoulé !</div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══ S7 : EXERCICES ═══ -->
+<div class="section" id="s7">
+  <div class="sec-hdr">
+    <div class="sec-n">07</div>
+    <div>
+      <div class="sec-title">Exercices interactifs</div>
+      <div class="sec-sub">Mets en pratique ce que tu as appris</div>
+    </div>
+  </div>
+
+  <div class="exblk">
+    <div class="exhdr"><div class="extitle">💡 Exercice 1 — Identifier les blocs</div><span class="badge beasy">Facile</span></div>
+    <div class="exbody">
+      <p>Associe chaque bloc à sa catégorie correcte :</p>
+      <div style="display:flex;flex-direction:column;gap:12px;margin-top:14px;">
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+          <div class="bv bv-motion" style="margin:0;font-size:12px;">avancer de 10 pas</div>
+          <span style="color:var(--muted);font-size:13px;">→</span>
+          <select id="ex1q1" style="background:var(--s1);border:1px solid var(--border);color:var(--txt);padding:6px 12px;border-radius:7px;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;">
+            <option value="">-- choisir --</option>
+            <option value="mouvement">Mouvement 🔵</option>
+            <option value="apparence">Apparence 💜</option>
+            <option value="son">Son 🔊</option>
+            <option value="evenements">Événements 🟡</option>
+          </select>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+          <div class="bv bv-looks" style="margin:0;font-size:12px;">dire "Bonjour !" 2 sec</div>
+          <span style="color:var(--muted);font-size:13px;">→</span>
+          <select id="ex1q2" style="background:var(--s1);border:1px solid var(--border);color:var(--txt);padding:6px 12px;border-radius:7px;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;">
+            <option value="">-- choisir --</option>
+            <option value="mouvement">Mouvement 🔵</option>
+            <option value="apparence">Apparence 💜</option>
+            <option value="son">Son 🔊</option>
+            <option value="evenements">Événements 🟡</option>
+          </select>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+          <div class="bv bv-hat bv-events" style="margin:0;font-size:12px;">🚩 Quand ⬛ est cliqué</div>
+          <span style="color:var(--muted);font-size:13px;">→</span>
+          <select id="ex1q3" style="background:var(--s1);border:1px solid var(--border);color:var(--txt);padding:6px 12px;border-radius:7px;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;">
+            <option value="">-- choisir --</option>
+            <option value="mouvement">Mouvement 🔵</option>
+            <option value="apparence">Apparence 💜</option>
+            <option value="son">Son 🔊</option>
+            <option value="evenements">Événements 🟡</option>
+          </select>
+        </div>
+      </div>
+      <button class="corrBtn" onclick="checkEx1()">▶ Vérifier</button>
+      <div class="corrPanel" id="ex1corr">
+        <div>🔵 "avancer de 10 pas" → <strong style="color:var(--teal);">Mouvement</strong> ✅</div>
+        <div>💜 "dire … pendant … sec" → <strong style="color:var(--teal);">Apparence</strong> ✅</div>
+        <div>🟡 "Quand ⬛ est cliqué" → <strong style="color:var(--teal);">Événements</strong> ✅</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="exblk">
+    <div class="exhdr"><div class="extitle">💡 Exercice 2 — Lire un algorithme</div><span class="badge bmid">Intermédiaire</span></div>
+    <div class="exbody">
+      <p>Observe cet algorithme et réponds :</p>
+      <div class="block-stack" style="margin:14px 0;">
+        <div class="bv bv-hat bv-events">🚩 Quand ⬛ est cliqué</div>
+        <div class="bv bv-cap bv-control">répéter <span class="bv-inp">4</span> fois</div>
+        <div class="bv bv-motion bv-indent">avancer de <span class="bv-inp">50</span> pas</div>
+        <div class="bv bv-motion bv-indent">tourner de <span class="bv-inp">90</span> degrés ↻</div>
+        <div class="bv bv-foot">fin répéter</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:10px;">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+          <span style="font-size:13px;color:var(--muted);">Quelle forme le sprite trace-t-il ?</span>
+          <select id="ex2q1" style="background:var(--s1);border:1px solid var(--border);color:var(--txt);padding:6px 12px;border-radius:7px;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;">
+            <option value="">-- choisir --</option>
+            <option value="triangle">Un triangle</option>
+            <option value="carre">Un carré</option>
+            <option value="cercle">Un cercle</option>
+            <option value="etoile">Une étoile</option>
+          </select>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+          <span style="font-size:13px;color:var(--muted);">Combien de fois le sprite avance-t-il ?</span>
+          <select id="ex2q2" style="background:var(--s1);border:1px solid var(--border);color:var(--txt);padding:6px 12px;border-radius:7px;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;">
+            <option value="">-- choisir --</option>
+            <option value="1">1 fois</option>
+            <option value="4">4 fois</option>
+            <option value="8">8 fois</option>
+            <option value="infini">À l'infini</option>
+          </select>
+        </div>
+      </div>
+      <button class="corrBtn" onclick="checkEx2()">▶ Vérifier</button>
+      <div class="corrPanel" id="ex2corr">
+        <div>4 répétitions × 90° = 360° → <strong style="color:var(--teal);">le sprite trace un carré !</strong></div>
+        <div>Le sprite avance <strong style="color:var(--teal);">4 fois</strong> (une fois par tour de boucle).</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="exblk">
+    <div class="exhdr"><div class="extitle">🔥 Exercice 3 — Défi coordonnées</div><span class="badge bhard">Défi</span></div>
+    <div class="exbody">
+      <p>Un sprite part du centre (0, 0). Il avance de <strong>150 pas vers la droite</strong>, puis de <strong>80 pas vers le haut</strong>.</p>
+      <p style="margin-top:8px;color:var(--muted);">Quelles sont ses coordonnées finales ?</p>
+      <div style="display:flex;gap:12px;margin-top:14px;flex-wrap:wrap;align-items:center;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-size:13px;color:var(--muted);">x =</span>
+          <input id="ex3x" type="number" placeholder="?" class="calc-input" style="width:80px;">
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-size:13px;color:var(--muted);">y =</span>
+          <input id="ex3y" type="number" placeholder="?" class="calc-input" style="width:80px;">
+        </div>
+      </div>
+      <button class="corrBtn" onclick="checkEx3()">▶ Vérifier</button>
+      <div class="corrPanel" id="ex3corr">
+        <div>Départ : (0, 0)</div>
+        <div>+150 vers la droite → <strong style="color:var(--sky);">x augmente de 150</strong> → x = 150</div>
+        <div>+80 vers le haut → <strong style="color:var(--teal);">y augmente de 80</strong> → y = 80</div>
+        <div>Position finale : <strong style="color:var(--lime);">x = 150, y = 80</strong> ✅</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══ S8 : QUIZ FINAL ═══ -->
+<div class="section" id="s8">
+  <div class="sec-hdr">
+    <div class="sec-n">08</div>
+    <div>
+      <div class="sec-title">Quiz final</div>
+      <div class="sec-sub">Vérifie ta maîtrise de Scratch !</div>
+    </div>
+  </div>
+  <div style="background:var(--sc-d);border:1px solid var(--sc-b);border-radius:10px;padding:14px 20px;margin-bottom:20px;font-size:13.5px;color:var(--sc);font-weight:600;">
+    🏆 10 questions · Gagne jusqu'à 50 XP · Obtiens le badge Champion du Quiz !
+  </div>
+  <div id="quizBlock">
+    <div class="qblk"><div class="qtext">1. Quel bloc lance un programme Scratch ?</div><div class="qopts"><button class="qopt" onclick="qSel(1,this,'a')">avancer de 10 pas</button><button class="qopt" onclick="qSel(1,this,'b')">🚩 Quand ⬛ est cliqué</button><button class="qopt" onclick="qSel(1,this,'c')">répéter 10 fois</button><button class="qopt" onclick="qSel(1,this,'d')">dire "Bonjour"</button></div></div>
+    <div class="qblk"><div class="qtext">2. De quelle couleur sont les blocs "Mouvement" ?</div><div class="qopts"><button class="qopt" onclick="qSel(2,this,'a')">Violet</button><button class="qopt" onclick="qSel(2,this,'b')">Jaune</button><button class="qopt" onclick="qSel(2,this,'c')">Bleu</button><button class="qopt" onclick="qSel(2,this,'d')">Vert</button></div></div>
+    <div class="qblk"><div class="qtext">3. Qu'est-ce qu'un sprite dans Scratch ?</div><div class="qopts"><button class="qopt" onclick="qSel(3,this,'a')">Un bloc de couleur</button><button class="qopt" onclick="qSel(3,this,'b')">Le fond de la scène</button><button class="qopt" onclick="qSel(3,this,'c')">Un personnage ou objet qu'on programme</button><button class="qopt" onclick="qSel(3,this,'d')">La zone de script</button></div></div>
+    <div class="qblk"><div class="qtext">4. Quelle boucle fait tourner un sprite pour toujours ?</div><div class="qopts"><button class="qopt" onclick="qSel(4,this,'a')">répéter 1 fois</button><button class="qopt" onclick="qSel(4,this,'b')">si … alors</button><button class="qopt" onclick="qSel(4,this,'c')">répéter indéfiniment</button><button class="qopt" onclick="qSel(4,this,'d')">avancer de 0 pas</button></div></div>
+    <div class="qblk"><div class="qtext">5. Quelles sont les coordonnées du centre de la scène Scratch ?</div><div class="qopts"><button class="qopt" onclick="qSel(5,this,'a')">x: 240, y: 180</button><button class="qopt" onclick="qSel(5,this,'b')">x: 0, y: 0</button><button class="qopt" onclick="qSel(5,this,'c')">x: -240, y: -180</button><button class="qopt" onclick="qSel(5,this,'d')">x: 1, y: 1</button></div></div>
+    <div class="qblk"><div class="qtext">6. Dans quel ordre Scratch exécute-t-il les blocs ?</div><div class="qopts"><button class="qopt" onclick="qSel(6,this,'a')">De bas en haut</button><button class="qopt" onclick="qSel(6,this,'b')">Dans un ordre aléatoire</button><button class="qopt" onclick="qSel(6,this,'c')">De haut en bas</button><button class="qopt" onclick="qSel(6,this,'d')">On peut choisir</button></div></div>
+    <div class="qblk"><div class="qtext">7. Que fait la structure "SI … ALORS" ?</div><div class="qopts"><button class="qopt" onclick="qSel(7,this,'a')">Elle répète des blocs en boucle</button><button class="qopt" onclick="qSel(7,this,'b')">Elle permet au programme de prendre une décision</button><button class="qopt" onclick="qSel(7,this,'c')">Elle fait avancer le sprite</button><button class="qopt" onclick="qSel(7,this,'d')">Elle change la couleur</button></div></div>
+    <div class="qblk"><div class="qtext">8. Quel bloc affiche une bulle de dialogue au-dessus d'un sprite ?</div><div class="qopts"><button class="qopt" onclick="qSel(8,this,'a')">avancer de 10 pas</button><button class="qopt" onclick="qSel(8,this,'b')">jouer le son Miaou</button><button class="qopt" onclick="qSel(8,this,'c')">dire "…" pendant … sec</button><button class="qopt" onclick="qSel(8,this,'d')">tourner de 90 degrés</button></div></div>
+    <div class="qblk"><div class="qtext">9. Combien de tours effectue "répéter 5 fois" ?</div><div class="qopts"><button class="qopt" onclick="qSel(9,this,'a')">1</button><button class="qopt" onclick="qSel(9,this,'b')">Infini</button><button class="qopt" onclick="qSel(9,this,'c')">5</button><button class="qopt" onclick="qSel(9,this,'d')">10</button></div></div>
+    <div class="qblk"><div class="qtext">10. Le site officiel de Scratch est :</div><div class="qopts"><button class="qopt" onclick="qSel(10,this,'a')">scratch.apple.com</button><button class="qopt" onclick="qSel(10,this,'b')">scratch.mit.edu</button><button class="qopt" onclick="qSel(10,this,'c')">code.google.com</button><button class="qopt" onclick="qSel(10,this,'d')">scratch.fr</button></div></div>
+    <button class="qsubmit" id="quizBtn" onclick="submitQuiz()" disabled>✅ Valider mes réponses</button>
+    <div class="qresult" id="quizResult">
+      <div class="rscore" id="quizScore">—</div>
+      <div class="rbar"><div class="rbarfill" id="quizBar" style="width:0%"></div></div>
+      <div class="rmsg" id="quizMsg"></div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══ S9 : TROPHÉES ═══ -->
+<div class="section" id="s9">
+  <div class="sec-hdr">
+    <div class="sec-n">09</div>
+    <div>
+      <div class="sec-title">Trophées &amp; Badges</div>
+      <div class="sec-sub">Débloque des récompenses en progressant</div>
+    </div>
+  </div>
+  <div class="trophy-grid">
+    <div class="trophy-card locked" id="trophy-int" onclick="trophyInfo('int')">
+      <span class="trophy-icon">🎭</span>
+      <div class="trophy-name">Explorateur</div>
+      <span class="trophy-rarity rarity-c">Commun</span>
+      <div class="trophy-desc">Maîtrise l'interface Scratch</div>
+    </div>
+    <div class="trophy-card locked" id="trophy-boucle" onclick="trophyInfo('boucle')">
+      <span class="trophy-icon">🔁</span>
+      <div class="trophy-name">Boucleur</div>
+      <span class="trophy-rarity rarity-r">Rare</span>
+      <div class="trophy-desc">Maîtrise les boucles</div>
+    </div>
+    <div class="trophy-card locked" id="trophy-logic" onclick="trophyInfo('logic')">
+      <span class="trophy-icon">🧠</span>
+      <div class="trophy-name">Logicien</div>
+      <span class="trophy-rarity rarity-r">Rare</span>
+      <div class="trophy-desc">Maîtrise les conditions</div>
+    </div>
+    <div class="trophy-card locked" id="trophy-quiz" onclick="trophyInfo('quiz')">
+      <span class="trophy-icon">🏆</span>
+      <div class="trophy-name">Champion</div>
+      <span class="trophy-rarity rarity-e">Épique</span>
+      <div class="trophy-desc">Score parfait au quiz</div>
+    </div>
+    <div class="trophy-card locked legendary" id="trophy-all" onclick="trophyInfo('all')">
+      <span class="trophy-icon">⭐</span>
+      <div class="trophy-name">Programmeur Étoile</div>
+      <span class="trophy-rarity rarity-l">Légendaire</span>
+      <div class="trophy-desc">Tous les badges débloqués !</div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══ S10 : FICHES PDF ═══ -->
+<div class="section" id="s10">
+  <div class="sec-hdr">
+    <div class="sec-n">10</div>
+    <div>
+      <div class="sec-title">Fiches de révision</div>
+      <div class="sec-sub">Télécharge et imprime tes fiches de cours</div>
+    </div>
+  </div>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;margin:20px 0;">
+    <button onclick="dlFicheBlocs()" style="display:flex;align-items:center;gap:9px;padding:12px 22px;border-radius:10px;background:var(--sc);border:none;color:#fff;font-size:13px;font-weight:700;cursor:pointer;transition:opacity .2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">⬇ Fiche — Les blocs Scratch</button>
+    <button onclick="dlFicheAlgo()" style="display:flex;align-items:center;gap:9px;padding:12px 22px;border-radius:10px;background:var(--s2);border:1px solid var(--border);color:var(--txt);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--sc)'" onmouseout="this.style.borderColor='var(--border)'">⬇ Fiche — Algorithmes &amp; Boucles</button>
+    <button onclick="dlCarte()" style="display:flex;align-items:center;gap:9px;padding:12px 22px;border-radius:10px;background:var(--s2);border:1px solid var(--border);color:var(--txt);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--sc)'" onmouseout="this.style.borderColor='var(--border)'">🗺️ Carte mentale Scratch</button>
+  </div>
+
+  <!-- Récap visuel -->
+  <p style="font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin:24px 0 14px;">🗺️ Récapitulatif — Les essentiels Scratch</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;">
+    <div style="background:#f0f7ff;border:2px solid #93c5fd;border-radius:14px;padding:18px;">
+      <div style="font-size:22px;margin-bottom:6px;">🎮</div>
+      <div style="font-size:14px;font-weight:800;color:#1d4ed8;margin-bottom:8px;">Interface Scratch</div>
+      <div style="display:flex;flex-direction:column;gap:4px;font-size:12px;">
+        <div style="padding:4px 8px;background:#dbeafe;border-radius:5px;color:#1e40af;font-weight:600;">🎨 Palette de blocs</div>
+        <div style="padding:4px 8px;background:#dbeafe;border-radius:5px;color:#1e40af;font-weight:600;">📜 Zone de script</div>
+        <div style="padding:4px 8px;background:#dbeafe;border-radius:5px;color:#1e40af;font-weight:600;">🎬 Scène 480 × 360 px</div>
+        <div style="padding:4px 8px;background:#dbeafe;border-radius:5px;color:#1e40af;font-weight:600;">🐱 Sprites · 🎭 Décor</div>
+      </div>
+    </div>
+    <div style="background:#f0fdf4;border:2px solid #86efac;border-radius:14px;padding:18px;">
+      <div style="font-size:22px;margin-bottom:6px;">🧩</div>
+      <div style="font-size:14px;font-weight:800;color:#15803d;margin-bottom:8px;">Blocs par couleur</div>
+      <div style="display:flex;flex-direction:column;gap:4px;font-size:11px;">
+        <div style="padding:4px 8px;background:#4d97ff;border-radius:5px;color:#fff;font-weight:700;">🔵 Mouvement</div>
+        <div style="padding:4px 8px;background:#9966ff;border-radius:5px;color:#fff;font-weight:700;">💜 Apparence</div>
+        <div style="padding:4px 8px;background:#ffab19;border-radius:5px;color:#1a0e00;font-weight:700;">🟡 Événements</div>
+        <div style="padding:4px 8px;background:#ff8c1a;border-radius:5px;color:#fff;font-weight:700;">🟠 Contrôle (boucles)</div>
+      </div>
+    </div>
+    <div style="background:#fff7ed;border:2px solid #fdba74;border-radius:14px;padding:18px;">
+      <div style="font-size:22px;margin-bottom:6px;">🔁</div>
+      <div style="font-size:14px;font-weight:800;color:#c2410c;margin-bottom:8px;">Boucles &amp; Conditions</div>
+      <div style="display:flex;flex-direction:column;gap:5px;font-size:12px;">
+        <div style="background:#fff;border-radius:6px;padding:5px 10px;border-left:3px solid #ea580c;"><strong>répéter N fois</strong> → Répète N fois</div>
+        <div style="background:#fff;border-radius:6px;padding:5px 10px;border-left:3px solid #ea580c;"><strong>répéter indéfiniment</strong> → ∞</div>
+        <div style="background:#fff;border-radius:6px;padding:5px 10px;border-left:3px solid #ea580c;"><strong>si … alors</strong> → Décision</div>
+      </div>
+    </div>
+    <div style="background:#fdf4ff;border:2px solid #d8b4fe;border-radius:14px;padding:18px;">
+      <div style="font-size:22px;margin-bottom:6px;">📍</div>
+      <div style="font-size:14px;font-weight:800;color:#6d28d9;margin-bottom:8px;">Coordonnées (x, y)</div>
+      <div style="display:flex;flex-direction:column;gap:4px;font-size:12px;">
+        <div style="background:#ede8ff;border-radius:5px;padding:5px 10px;font-weight:700;color:#5b21b6;">🎯 Centre = (0, 0)</div>
+        <div style="background:#ede8ff;border-radius:5px;padding:5px 10px;font-weight:700;color:#5b21b6;">→ Droite : x &gt; 0 (max 240)</div>
+        <div style="background:#ede8ff;border-radius:5px;padding:5px 10px;font-weight:700;color:#5b21b6;">← Gauche : x &lt; 0 (min -240)</div>
+        <div style="background:#ede8ff;border-radius:5px;padding:5px 10px;font-weight:700;color:#5b21b6;">↑ Haut : y &gt; 0 (max 180)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /content -->
+</div><!-- /main -->
+<script>
+/* ══════════════════════════════════════════
+   GAMIFICATION ENGINE — Scratch 6ème
+══════════════════════════════════════════ */
+var G = {
+  xp: 0, mode: 'normal',
+  badges: {int:false, boucle:false, logic:false, quiz:false, all:false},
+  gc: {},
+  qa: {}, qScore: 0
+};
+var LEVELS = [
+  {name:'Débutant',    icon:'🐱', min:0},
+  {name:'Apprenti',    icon:'🔵', min:30},
+  {name:'Intermédiaire', icon:'🔁', min:80},
+  {name:'Avancé',      icon:'🧠', min:130},
+  {name:'Expert',      icon:'⭐', min:180},
+  {name:'Maître Scratch', icon:'🏆', min:220}
+];
+
+function gCurrentLevel() {
+  var l = LEVELS[0];
+  for (var i = 0; i < LEVELS.length; i++) { if (G.xp >= LEVELS[i].min) l = LEVELS[i]; }
+  return l;
+}
+
+function gAddXP(amt, skill) {
+  G.xp += amt;
+  if (skill === 'int')    { G.badges.int   = true; earnBadge('int',   'skInt',    'skIntV',   'badge-int'); }
+  if (skill === 'boucle') { G.badges.boucle= true; earnBadge('boucle','skBoucle', 'skBoucleV','badge-boucle'); }
+  if (skill === 'logic')  { G.badges.logic = true; earnBadge('logic', 'skLogic',  'skLogicV', 'badge-logic'); }
+  checkAllBadges();
+  refreshHUD();
+  gToast('+' + amt + ' XP ! 🎉', 'toast-xp');
+}
+
+function earnBadge(key, barId, valId, badgeId) {
+  var bar = document.getElementById(barId);
+  var val = document.getElementById(valId);
+  var slot = document.getElementById(badgeId);
+  var pct = Math.min(100, G.xp);
+  if (bar) bar.style.width = pct + '%';
+  if (val) val.textContent = pct;
+  if (slot) slot.classList.add('earned');
+  refreshTrophies();
+}
+
+function checkAllBadges() {
+  if (G.badges.int && G.badges.boucle && G.badges.logic && G.badges.quiz) {
+    G.badges.all = true;
+    var s = document.getElementById('badge-all');
+    if (s) s.classList.add('earned');
+    refreshTrophies();
+    gToast('⭐ Badge Programmeur Étoile débloqué !', 'toast-badge');
+  }
+}
+
+function refreshTrophies() {
+  var map = {int:'trophy-int', boucle:'trophy-boucle', logic:'trophy-logic', quiz:'trophy-quiz', all:'trophy-all'};
+  for (var k in map) {
+    var el = document.getElementById(map[k]);
+    if (el) {
+      if (G.badges[k]) { el.classList.remove('locked'); el.classList.add('unlocked'); }
+      else { el.classList.add('locked'); el.classList.remove('unlocked'); }
+    }
+  }
+}
+
+function refreshHUD() {
+  var l = gCurrentLevel();
+  var li = document.getElementById('gLevelIcon'); if (li) li.textContent = l.icon;
+  var ln = document.getElementById('gLevelName'); if (ln) ln.textContent = l.name;
+  var ls = document.getElementById('gLevelSub');  if (ls) ls.textContent = G.xp + ' XP';
+  var ni = LEVELS.indexOf(l) + 1;
+  var nl = LEVELS[ni] || LEVELS[LEVELS.length - 1];
+  var xl = document.getElementById('gXPLabel');
+  if (xl) xl.textContent = G.xp + ' / ' + nl.min + ' XP';
+  var range = nl.min - l.min; if (range <= 0) range = 1;
+  var pct = Math.min(100, ((G.xp - l.min) / range) * 100);
+  var xf = document.getElementById('gXPFill'); if (xf) xf.style.width = pct + '%';
+  var sx = document.getElementById('gSideXP'); if (sx) sx.textContent = G.xp + ' pts';
+  var sf = document.getElementById('gSideFill'); if (sf) sf.style.width = Math.min(100, G.xp / 2.5) + '%';
+}
+
+function gToast(msg, cls) {
+  var el = document.createElement('div');
+  el.className = 'g-toast ' + (cls || '');
+  el.textContent = msg;
+  var c = document.getElementById('gToastContainer');
+  if (c) c.appendChild(el);
+  setTimeout(function(){ if (el.parentNode) el.parentNode.removeChild(el); }, 3000);
+}
+
+function showSuccess(icon, title, sub, xp) {
+  var o = document.getElementById('successOverlay');
+  var wi = document.getElementById('wowIcon');
+  var wt = document.getElementById('wowText');
+  var ws = document.getElementById('wowSub');
+  var wx = document.getElementById('wowXP');
+  if (wi) wi.textContent = icon;
+  if (wt) wt.textContent = title;
+  if (ws) ws.textContent = sub;
+  if (wx) wx.textContent = '+' + xp + ' XP';
+  if (o) {
+    /* Force CSS animation replay by removing and re-adding class */
+    o.classList.remove('show');
+    void o.offsetWidth; /* reflow */
+    o.classList.add('show');
+    /* Also reset child animations */
+    var card = document.getElementById('wowCard');
+    if (card) {
+      var clone = card.cloneNode(true);
+      clone.id = 'wowCard';
+      card.parentNode.replaceChild(clone, card);
+      /* Re-grab references after clone */
+      var wi2 = clone.querySelector('#wowIcon') || clone.querySelector('.wow-icon');
+      var wt2 = clone.querySelector('#wowText') || clone.querySelector('.wow-text');
+      var ws2 = clone.querySelector('#wowSub')  || clone.querySelector('.wow-sub');
+      var wx2 = clone.querySelector('#wowXP')   || clone.querySelector('.wow-xp-badge');
+      if (wi2) wi2.textContent = icon;
+      if (wt2) wt2.textContent = title;
+      if (ws2) ws2.textContent = sub;
+      if (wx2) wx2.textContent = '+' + xp + ' XP';
+    }
+    setTimeout(function(){ if (o) o.classList.remove('show'); }, 2200);
+  }
+}
+
+function gHUDtoggle() {
+  var h = document.getElementById('gHUD');
+  var b = document.getElementById('gHUD-toggle');
+  if (!h || !b) return;
+  h.classList.toggle('hidden');
+  b.classList.toggle('shifted');
+  b.textContent = h.classList.contains('hidden') ? '▶' : '◀';
+}
+
+function toggleTheme() {
+  document.body.classList.toggle('light');
+  var isL = document.body.classList.contains('light');
+  var tl = document.getElementById('themeLabel'); if (tl) tl.textContent = isL ? '☀️ Mode jour' : '🌙 Mode nuit';
+  var tt = document.getElementById('toggleTrack'); if (tt) tt.classList.toggle('on', isL);
+  try { localStorage.setItem('scratch_theme', isL ? 'light' : 'dark'); } catch(e) {}
+}
+
+function gSetMode(mode, btn) {
+  G.mode = mode;
+  var btns = document.querySelectorAll('.g-mode-btn');
+  for (var i = 0; i < btns.length; i++) btns[i].classList.remove('gm-active');
+  btn.classList.add('gm-active');
+  gToast('Mode ' + mode + ' activé', '');
+}
+
+function trophyInfo(k) {
+  var n = {int:'Explorateur', boucle:'Boucleur', logic:'Logicien', quiz:'Champion', all:'Programmeur Étoile'};
+  if (G.badges[k]) gToast('🏅 Badge ' + n[k] + ' débloqué !', 'toast-ok');
+  else gToast('🔒 ' + n[k] + ' — Continue à progresser !', '');
+}
+
+/* ── CHALLENGE ── */
+function gcAnswer(id, btn, correct, explanation) {
+  if (G.gc[id]) return;
+  G.gc[id] = true;
+  var opts = btn.parentElement.querySelectorAll('.g-copt');
+  for (var i = 0; i < opts.length; i++) opts[i].disabled = true;
+  var fb = document.getElementById('gcf-' + id);
+  if (correct) {
+    btn.classList.add('gc-ok');
+    if (fb) { fb.style.color = 'var(--teal)'; fb.textContent = '✅ Correct ! ' + explanation; fb.classList.add('show'); }
+    var skillMap = {s1:'int', s2:'int', s3:'int', s4:'boucle', s5:'logic'};
+    var xpMap    = {s1:10, s2:15, s3:15, s4:20, s5:15};
+    gAddXP(xpMap[id] || 10, skillMap[id] || 'int');
+    showSuccess('✅', 'BRAVO !', 'Bonne réponse !', xpMap[id] || 10);
+  } else {
+    btn.classList.add('gc-ko');
+    if (fb) { fb.style.color = 'var(--rose)'; fb.textContent = '❌ Pas tout à fait… ' + explanation; fb.classList.add('show'); }
+    gToast('Réessaie plus tard !', 'toast-ko');
+  }
+}
+
+/* ── DEMO SPRITE ── */
+var demoStep = 0;
+var demoPosArr = [{l:'72px',b:'18px'},{l:'112px',b:'18px'},{l:'36px',b:'54px'},{l:'14px',b:'18px'},{l:'72px',b:'18px'}];
+function demoAnimate() {
+  var s = document.getElementById('demoSprite');
+  if (!s) return;
+  demoStep = (demoStep + 1) % demoPosArr.length;
+  s.style.left = demoPosArr[demoStep].l;
+  s.style.bottom = demoPosArr[demoStep].b;
+}
+function demoReset() {
+  var s = document.getElementById('demoSprite');
+  if (!s) return;
+  s.style.left = '72px'; s.style.bottom = '18px'; demoStep = 0;
+}
+
+/* ── SQUARE CANVAS ── */
+function drawSquare() {
+  var c = document.getElementById('squareCanvas');
+  if (!c) return;
+  var ctx = c.getContext('2d');
+  ctx.clearRect(0, 0, 140, 140);
+  ctx.strokeStyle = '#ff6b35'; ctx.lineWidth = 3;
+  ctx.strokeRect(20, 20, 100, 100);
+  ctx.font = '22px serif'; ctx.fillText('🐱', 56, 76);
+  gToast('🎨 Carré tracé !', 'toast-ok');
+}
+
+/* ── COORD DEMO ── */
+var coordStepArr = [
+  {cx:250,cy:170,lx:0,ly:0},
+  {cx:360,cy:98, lx:110,ly:72},
+  {cx:140,cy:242,lx:-110,ly:-72},
+  {cx:405,cy:55, lx:155,ly:115},
+  {cx:78, cy:282,lx:-172,ly:-112}
+];
+var coordStep = 0;
+function moveSpriteDemo() {
+  coordStep = (coordStep + 1) % coordStepArr.length;
+  var p = coordStepArr[coordStep];
+  var sp = document.getElementById('coordSprite');
+  var lb = document.getElementById('coordLabel');
+  var cz = document.getElementById('coordClickZone');
+  if (sp) { sp.setAttribute('x', p.cx - 14); sp.setAttribute('y', p.cy + 10); }
+  if (cz) { cz.setAttribute('x', p.cx - 28); cz.setAttribute('y', p.cy - 22); }
+  if (lb) lb.textContent = 'x: ' + p.lx + '  y: ' + p.ly;
+}
+
+/* ── EXERCISES ── */
+function checkEx1() {
+  var q1 = document.getElementById('ex1q1').value;
+  var q2 = document.getElementById('ex1q2').value;
+  var q3 = document.getElementById('ex1q3').value;
+  var p = document.getElementById('ex1corr');
+  if (p) p.classList.add('on');
+  if (q1 === 'mouvement' && q2 === 'apparence' && q3 === 'evenements') {
+    gAddXP(10, 'int'); showSuccess('✅','PARFAIT !','Exercice réussi !',10);
+  } else { gToast('Certaines réponses sont incorrectes — regarde la correction !', 'toast-ko'); }
+}
+function checkEx2() {
+  var q1 = document.getElementById('ex2q1').value;
+  var q2 = document.getElementById('ex2q2').value;
+  var p = document.getElementById('ex2corr');
+  if (p) p.classList.add('on');
+  if (q1 === 'carre' && q2 === '4') {
+    gAddXP(15, 'boucle'); showSuccess('✅','BRAVO !','Exercice réussi !',15);
+  } else { gToast('Relis la correction !', 'toast-ko'); }
+}
+function checkEx3() {
+  var xi = document.getElementById('ex3x');
+  var yi = document.getElementById('ex3y');
+  var x = parseInt(xi ? xi.value : '');
+  var y = parseInt(yi ? yi.value : '');
+  var p = document.getElementById('ex3corr');
+  if (p) p.classList.add('on');
+  if (x === 150 && y === 80) {
+    xi.classList.add('ok'); yi.classList.add('ok');
+    gAddXP(20, 'logic'); showSuccess('🌟','EXCELLENT !','Coordonnées exactes !',20);
+  } else {
+    if (xi) xi.classList.add('ko');
+    if (yi) yi.classList.add('ko');
+    gToast('Pas tout à fait… regarde la correction.', 'toast-ko');
+  }
+}
+
+/* ── QUIZ ── */
+var QCORR = {1:'b',2:'c',3:'c',4:'c',5:'b',6:'c',7:'b',8:'c',9:'c',10:'b'};
+function qSel(n, btn, val) {
+  var opts = btn.parentElement.querySelectorAll('.qopt');
+  for (var i = 0; i < opts.length; i++) opts[i].classList.remove('sel');
+  btn.classList.add('sel');
+  G.qa[n] = val;
+  if (Object.keys(G.qa).length >= 10) {
+    var qb = document.getElementById('quizBtn');
+    if (qb) qb.disabled = false;
+  }
+}
+function submitQuiz() {
+  var score = 0;
+  for (var i = 1; i <= 10; i++) {
+    if (G.qa[i] === QCORR[i]) score++;
+    var rows = document.querySelectorAll('#quizBlock .qblk');
+    if (rows[i-1]) {
+      var opts = rows[i-1].querySelectorAll('.qopt');
+      for (var j = 0; j < opts.length; j++) {
+        opts[j].disabled = true;
+        var v = null;
+        var oc = opts[j].getAttribute('onclick') || '';
+        var m = oc.match(/,'([a-d])'\)/);
+        if (m) v = m[1];
+        if (v === QCORR[i]) opts[j].classList.add('good');
+        else if (v === G.qa[i] && v !== QCORR[i]) opts[j].classList.add('bad');
+      }
+    }
+  }
+  G.qScore = score;
+  var qr = document.getElementById('quizResult');
+  var qs = document.getElementById('quizScore');
+  var qb = document.getElementById('quizBar');
+  var qm = document.getElementById('quizMsg');
+  if (qr) qr.classList.add('on');
+  if (qs) qs.textContent = score + '/10';
+  var pct = score / 10 * 100;
+  if (qb) { qb.style.width = pct + '%'; qb.style.background = score >= 8 ? 'var(--teal)' : score >= 5 ? 'var(--amber)' : 'var(--rose)'; }
+  var msgs = ["Continue à t'entraîner — relis le cours !","Pas mal ! Encore un peu de révision.","Très bien ! Tu maîtrises les bases.","Excellent ! Tu es prêt(e) à programmer !","🏆 Score parfait ! Tu maîtrises Scratch !"];
+  if (qm) qm.textContent = msgs[Math.min(4, Math.floor(score / 2.5))];
+  var xpGain = score * 5;
+  gAddXP(xpGain, score >= 7 ? 'logic' : 'int');
+  if (score >= 8) {
+    G.badges.quiz = true;
+    var bq = document.getElementById('badge-quiz'); if (bq) bq.classList.add('earned');
+    checkAllBadges();
+  }
+  if (score === 10) showSuccess('🏆', 'SCORE PARFAIT !', '10/10 !!', 50);
+  var qBtn = document.getElementById('quizBtn'); if (qBtn) qBtn.disabled = true;
+  setTimeout(function(){
+    var bdg = Object.values(G.badges).filter(Boolean).length;
+    var l = gCurrentLevel();
+    var ee = document.getElementById('gEndEmoji');
+    var es = document.getElementById('gEndSub');
+    var ex = document.getElementById('gEndXP');
+    var el = document.getElementById('gEndLvl');
+    var eb = document.getElementById('gEndBdg');
+    var em = document.getElementById('gEndMsg');
+    var ebl = document.getElementById('gEndBadgeList');
+    if (ee) ee.textContent = G.xp >= 150 ? '🏆' : G.xp >= 50 ? '🎯' : '💪';
+    if (es) es.textContent = bdg + ' badge(s) · Quiz: ' + G.qScore + '/10';
+    if (ex) ex.textContent = G.xp + ' XP';
+    if (el) el.textContent = l.name;
+    if (eb) eb.textContent = bdg + '/5';
+    if (em) em.textContent = G.xp >= 150 ? 'Tu maîtrises Scratch ! Crée ton propre jeu 🎮' : G.xp >= 50 ? 'Beau travail ! Encore quelques défis.' : 'Continue — chaque exercice compte !';
+    if (ebl) {
+      ebl.innerHTML = '';
+      var bArr = [{k:'int',i:'🎭'},{k:'boucle',i:'🔁'},{k:'logic',i:'🧠'},{k:'quiz',i:'🏆'},{k:'all',i:'⭐'}];
+      for (var bi = 0; bi < bArr.length; bi++) {
+        var div = document.createElement('div');
+        div.className = 'g-end-badge';
+        div.textContent = bArr[bi].i;
+        div.style.opacity = G.badges[bArr[bi].k] ? '1' : '0.2';
+        div.style.filter  = G.badges[bArr[bi].k] ? 'none' : 'grayscale(1)';
+        ebl.appendChild(div);
+      }
+    }
+    var gs = document.getElementById('gEndScreen');
+    if (gs) gs.classList.add('show');
+  }, 800);
+}
+
+/* ── NAVIGATION ── */
+var navLinks = document.querySelectorAll('.nlink[href^="#"]');
+var sections  = document.querySelectorAll('.section');
+if (typeof IntersectionObserver !== 'undefined') {
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        var id = e.target.id;
+        navLinks.forEach(function(l) { l.classList.toggle('on', l.getAttribute('href') === '#' + id); });
+      }
+    });
+  }, {threshold: 0.15});
+  sections.forEach(function(s) { obs.observe(s); });
+}
+
+/* ── PDF DOWNLOADS ── */
+function dlHTML(html, name) {
+  try {
+    var b = new Blob([html], {type: 'text/html'});
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(b);
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(a.href); }, 100);
+    gToast('⬇ Téléchargement lancé !', 'toast-ok');
+  } catch(e) { gToast('Erreur de téléchargement', 'toast-ko'); }
+}
+function dlFicheBlocs() {
+  dlHTML('<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><title>Fiche Blocs Scratch 6ème</title><style>body{font-family:sans-serif;max-width:700px;margin:20px auto;padding:20px;color:#1a1a2e;}h1{color:#ff6b35;}h2{color:#4d97ff;margin-top:20px;}.b{display:inline-block;padding:5px 12px;border-radius:7px;color:#fff;font-weight:700;margin:3px;font-size:13px;}.m{background:#4d97ff;}.a{background:#9966ff;}.e{background:#ffab19;color:#1a0e00;}.c{background:#ff8c1a;}.s{background:#cf63cf;}table{border-collapse:collapse;width:100%;margin:12px 0;}td,th{border:1px solid #ddd;padding:8px;text-align:center;}th{background:#f0f4ff;}</style></head><body><h1>🐱 Fiche Blocs Scratch — 6ème</h1><h2>🔵 Mouvement</h2><span class="b m">avancer de 10 pas</span><span class="b m">tourner de 15°</span><span class="b m">aller à x:0 y:0</span><span class="b m">rebondir si le bord est atteint</span><h2>💜 Apparence</h2><span class="b a">dire "…" pendant 2 sec</span><span class="b a">changer la taille de 10</span><span class="b a">cacher</span><span class="b a">montrer</span><h2>🟡 Événements</h2><span class="b e">🚩 Quand ⬛ est cliqué</span><span class="b e">Quand ce sprite est cliqué</span><h2>🟠 Contrôle</h2><span class="b c">répéter N fois</span><span class="b c">répéter indéfiniment</span><span class="b c">si &lt;condition&gt; alors</span><h2>📍 Coordonnées</h2><table><tr><th>Position</th><th>x</th><th>y</th></tr><tr><td>Centre</td><td><b>0</b></td><td><b>0</b></td></tr><tr><td>Bord droit</td><td>240</td><td>0</td></tr><tr><td>Bord gauche</td><td>-240</td><td>0</td></tr><tr><td>Haut</td><td>0</td><td>180</td></tr><tr><td>Bas</td><td>0</td><td>-180</td></tr></table></body></html>', 'fiche_blocs_scratch_6eme.html');
+}
+function dlFicheAlgo() {
+  var h = '<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><title>Fiche Algorithmes Scratch 6\u00e8me</title>' +
+    '<style>body{font-family:sans-serif;max-width:700px;margin:20px auto;padding:20px;color:#1a1a2e;}' +
+    'h1{color:#ff6b35;}.box{background:#f0f4ff;border-left:4px solid #4d97ff;padding:12px;border-radius:8px;margin:10px 0;}' +
+    '.code{font-family:monospace;background:#1a1a2e;color:#a8ff6e;padding:12px;border-radius:8px;font-size:13px;line-height:1.8;margin:8px 0;white-space:pre;}' +
+    '</style></head><body>' +
+    '<h1>&#128260; Fiche Algorithmes &mdash; Scratch 6\u00e8me</h1>' +
+    '<div class="box"><b>R\u00e8gle d\'or :</b> Les blocs s\'ex\u00e9cutent <b>de haut en bas</b>. C\'est une <b>s\u00e9quence</b>.</div>' +
+    '<h2>Boucle : r\u00e9p\u00e9ter N fois</h2>' +
+    '<div class="code">Quand &#9632; est cliqu\u00e9\nr\u00e9p\u00e9ter [4] fois\n  avancer de 100 pas\n  tourner de 90 degr\u00e9s\nfin r\u00e9p\u00e9ter</div>' +
+    '<p>\u2192 4 c\u00f4t\u00e9s \u00d7 90\u00b0 = 360\u00b0 \u2192 le sprite trace <b>un carr\u00e9 !</b></p>' +
+    '<h2>Boucle infinie</h2>' +
+    '<div class="code">Quand &#9632; est cliqu\u00e9\nr\u00e9p\u00e9ter ind\u00e9finiment\n  avancer de 5 pas\n  rebondir si bord atteint\nfin r\u00e9p\u00e9ter</div>' +
+    '<h2>Condition SI \u2026 ALORS</h2>' +
+    '<div class="code">si &lt;touche le bord ?&gt; alors\n  rebondir si bord atteint\n  dire "A\u00efe !" pendant 1 sec\nfin si</div>' +
+    '</body></html>';
+  dlHTML(h, 'fiche_algorithmes_scratch_6eme.html');
+}
+function dlCarte() {
+  dlHTML('<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><title>Carte mentale Scratch 6ème</title><style>body{font-family:sans-serif;background:#f9fafb;padding:20px;}h1{text-align:center;color:#ff6b35;}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:800px;margin:0 auto;}.card{border-radius:12px;padding:16px;border:2px solid;}.tag{display:inline-block;padding:4px 10px;border-radius:5px;font-size:12px;font-weight:700;margin:2px;}</style></head><body><h1>🐱 Scratch — Carte mentale 6ème</h1><div class="grid"><div class="card" style="background:#dbeafe;border-color:#93c5fd;"><b style="color:#1d4ed8;">🎮 Interface</b><br><span class="tag" style="background:#fff;color:#1d4ed8;">Palette</span><span class="tag" style="background:#fff;color:#1d4ed8;">Zone script</span><span class="tag" style="background:#fff;color:#1d4ed8;">Scène 480×360</span><span class="tag" style="background:#fff;color:#1d4ed8;">Sprites</span></div><div class="card" style="background:#d1fae5;border-color:#6ee7b7;"><b style="color:#065f46;">🧩 Blocs</b><br><span class="tag" style="background:#4d97ff;color:#fff;">Mouvement</span><span class="tag" style="background:#9966ff;color:#fff;">Apparence</span><span class="tag" style="background:#ffab19;color:#1a0e00;">Événements</span><span class="tag" style="background:#ff8c1a;color:#fff;">Contrôle</span></div><div class="card" style="background:#fef3c7;border-color:#fcd34d;"><b style="color:#92400e;">🔁 Boucles</b><br><span class="tag" style="background:#ff8c1a;color:#fff;">répéter N fois</span><span class="tag" style="background:#ff8c1a;color:#fff;">répéter indéfiniment ∞</span></div><div class="card" style="background:#ede9fe;border-color:#c4b5fd;"><b style="color:#4c1d95;">📍 Coordonnées</b><br><p style="font-size:13px;color:#5b21b6;">Centre = (0,0) · x droit &gt; 0 · x gauche &lt; 0<br>y haut &gt; 0 · y bas &lt; 0 · Max ±240, ±180</p></div></div></body></html>', 'carte_mentale_scratch_6eme.html');
+}
+
+/* ── INIT ── */
+(function init() {
+  /* Restore saved theme */
+  try {
+    if (localStorage.getItem('scratch_theme') === 'light') {
+      document.body.classList.add('light');
+      var tl = document.getElementById('themeLabel'); if (tl) tl.textContent = '☀️ Mode jour';
+      var tt = document.getElementById('toggleTrack'); if (tt) tt.classList.add('on');
+    }
+  } catch(e) {}
+  refreshHUD();
+  refreshTrophies();
+  setTimeout(function(){ gToast("👋 Bienvenue ! Lance les défis pour gagner de l'XP 🎮", ''); }, 1000);
+})();
+</script>
+</body>
+</html>
